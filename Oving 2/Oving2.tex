@@ -5,11 +5,14 @@
 \date{16.10.20}
 \pdfoutput=1
 
+\usepackage{changepage}
 \usepackage[margin=1in]{geometry}
 \usepackage[dvipsnames]{color}
 \usepackage{url}
 \usepackage{pgfgantt}
 \usepackage{graphicx}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
 
 \begin{document}
 \begin{center}
@@ -79,18 +82,20 @@ In order to make the robot do its job, we need a motion control algorithm that a
 \\
 This module contains code for every sensor on the robot, including output to the motors. This module will be responsible for connecting every other module together, it will be the core code of the robot. 
 \\\\
-\textbf{Camera module}
-\\
-The project includes a Raspberry Pi camera. We will use the standard raspberry Pi camera library to receive images from the camera. Then we will use OpenCV to convert the image to an array of pixels.
-\\\\
-\textbf{Distance sensor}
-\\ 
-The project includes a distance sensor. The GoPiGo library contains a function that returns the distance to the obstacles in millimetres which we can use further in the code. 
-\\\\
-\textbf{Motor I/O}
-\\
-A function to control the wheels of the robot. The function should take two parameters, one for the speed of the wheel and another that defines which wheel to set the speed. 
-\\\\
+\begin{myenv}
+
+    \textbf{Camera module}
+    \\
+    The project includes a Raspberry Pi camera. We will use the standard raspberry Pi camera library to receive images from the camera. Then we will use OpenCV to convert the image to an array of pixels.
+    \\\\
+    \textbf{Distance sensor}
+    \\ 
+    The project includes a distance sensor. The GoPiGo library contains a function that returns the distance to the obstacles in millimetres which we can use further in the code. 
+    \\\\
+    \textbf{Motor I/O}
+    \\
+    A function to control the wheels of the robot. The function should take two parameters, one for the speed of the wheel and another that defines which wheel to set the speed. \\
+\end{myenv}
 \textbf{Image processing module}
 \\
 In order for the robot to detect the road it’s going to follow it will have to process images in real time, these images will be converted and scanned in order to make this as easy as possible:
@@ -318,6 +323,6 @@ Some of the ways we can hopefully mitigate these risks are:
         \item This includes doing a physical inspection of them to try to see any broken parts, as well as thoroughly testing them before deployment. 
     \end{itemize}
     \item Thoroughly testing the code at each stage, to catch errors early and squash bugs. 
-    \item We can hopefully mitigate bad time management by thoroughly discussing and planning the project. 
+    \item We can hopefully mitigate bad time management by thoroughly discussing and planning the project.  
 \end{itemize}
 \end{document}  
