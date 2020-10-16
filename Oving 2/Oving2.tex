@@ -3,9 +3,13 @@
 \title{Teknologipr  osjekt: Øving 2}
 \author{Mathias Mellemstuen, Tobias Hallingstad, Ruben Fosby, Henrik Bratseth, Andreas Thauland, Erik Holmen}
 \date{16.10.20}
+\pdfoutput=1
 
+\usepackage[margin=1in]{geometry}
+\usepackage[dvipsnames]{color}
+\usepackage{url}
+\usepackage{pgfgantt}
 \usepackage{graphicx}
-\graphicspath{ {./images/} }
 
 \begin{document}
 \begin{center}
@@ -89,45 +93,163 @@ The user interface is a web page that is locally hosted on the raspberry pi. The
     \item Opening port 80 on the firewall for the web interface. 
     \item Setting up a service in systemctl to run the python code when linux is booting.
 \end{enumerate}
+List of responsibilities: \\\\
+\begin{tabular}{ |c|c| }
+    \hline
+    \textbf{Work package (WP)} & \textbf{Responsibility} \\
+    \hline
+    I/O module & x person \\
+    \hline
+    Motion control module & x person \\
+    \hline
+    Image processing module & x person \\
+    \hline
+    Web interface & x person \\
+    \hline
+    Testing & x person \\
+    \hline
+    Documentation & x person \\
+    \hline
+\end{tabular}
 
-Work Package (WP)
-Estimated time to finish WP
-Responsibility
-Planning
-x days
-x person
-Create the Motion control algorithm 
-x days
-x person
-Testing the Motion control algorithm
-x days 
-x person
-Creating and implementing I/O to the Motion control algorithm
-x days 
-x person
-Testing that the Motion control algorithm works with input from sensors, camera, etc. And outputs to the motor. 
-x days
-x person
-Create image processing algorithm 
-x days
-x person
-Testing the image processing algorithm
-x days 
-x person
-Implementing the image processing algorithm to our motion control algorithm 
-x days
-x person
-Testing that the motion control algorithm works with both I/O and image processing
-x days 
-x person
-Creating the user interface (web)
-x days
-x person
-Implementing and testing the web interface with the motion control algorithm 
-x days 
-x person
-Documentation and creating a final report
-x days 
-x person
-
+\begin{center}
+    \begin{ganttchart}[%Specs
+             y unit title=0.5cm,
+             y unit chart=0.7cm,
+             vgrid,hgrid,
+             title height=1,
+             %     title/.style={fill=none},
+             title label font=\bfseries\footnotesize,
+                  bar/.style={fill=blue},
+                  bar height=0.7,
+                  %   progress label text={},
+                  group right shift=0,
+                  group top shift=0.7,
+                  group height=.3,
+                  group peaks width={0.2},
+                  inline]{1}{15}
+              %labels
+              %    \gantttitle{A project}{15}\\  % title level 1
+              \gantttitle[]{Aug.}{2}             % title level 2
+              \gantttitle[]{September}{4}                
+              \gantttitle[]{October}{5}               
+              \gantttitle[]{November}{4} \\      
+    
+              % I/O Module
+              \ganttgroup[inline=false]{WP 1: I/O Module}{1}{7} \\ 
+              \ganttbar[inline=false]{General setup}{1}{2} \\
+              \ganttmilestone[inline=false]{Milestone: Setup}{2} \\
+              \ganttbar[inline=false]{Camera}{3}{5} \\
+              \ganttmilestone[inline=false]{Milestone: Camera}{5} \\
+              \ganttbar[inline=false]{Distance sensor}{6}{7} \\
+              \ganttmilestone[inline=false]{Milestone: R3}{7} \\
+              
+              % Motion control
+              \ganttgroup[inline=false]{WP 2: Motion control}{1}{13} \\
+              \ganttbar[inline=false]{Driving}{1}{2} \\
+              \ganttbar[inline=false]{Turning}{3}{4} \\
+              \ganttbar[inline=false]{Motion control algorithm}{5}{7} \\
+              \ganttmilestone[inline=false]{Milestone: Simple control}{7} \\
+              \ganttbar[inline=false]{Stoping}{8}{9} \\
+              \ganttbar[inline=false]{Cross lane turning}{10}{11} \\
+              \ganttmilestone[inline=false]{Milestone: done}{11} \\
+              \ganttbar[inline=false]{Testing}{12}{13} \\
+              
+              % Image processing
+              \ganttgroup[inline=false]{WP 3: Image processing}{1}{12} \\ 
+              \ganttbar[inline=false]{Lane detection}{1}{3} \\ 
+              \ganttbar[inline=false]{Single straight lane}{4}{5} \\ 
+              \ganttmilestone[inline=false]{Milestone 1}{5} \\       
+              \ganttbar[inline=false]{Single curved lane}{6}{7} \\ 
+              \ganttbar[inline=false]{Cross lane detection}{8}{10} \\ 
+              \ganttmilestone[inline=false]{Milestone Cross lane}{10} \\
+              \ganttbar[inline=false]{Testing}{11}{12} \\
+    
+              % Web interface
+              \ganttgroup[inline=false]{WP 4: Web interface}{3}{10} \\
+              \ganttbar[inline=false]{Web design}{3}{10} \\
+              \ganttbar[inline=false]{Display info}{3}{4} \\
+              \ganttbar[inline=false]{Variable control}{4}{5} \\
+              \ganttmilestone[inline=false]{Milestone: general variable change}{5} \\
+              \ganttbar[inline=false]{Display camera}{6}{7} \\
+              \ganttmilestone[inline=false]{Milestone: Camera streaming}{7} \\
+              \ganttbar[inline=false]{Camera filter}{8}{9} \\
+              \ganttmilestone[inline=false]{Milestone: Display camera filters}{9} \\
+              \ganttbar[inline=false]{Robot control}{8}{10} \\
+              \ganttmilestone[inline=false]{Milestone: Controlling robot}{10}
+    
+         \end{ganttchart}
+    \end{center}
+    
+    \begin{center}
+         \begin{ganttchart}[%Specs
+              y unit title=0.5cm,
+              y unit chart=0.7cm,
+              vgrid,hgrid,
+              title height=1,
+              %     title/.style={fill=none},
+              title label font=\bfseries\footnotesize,
+                   bar/.style={fill=blue},
+                   bar height=0.7,
+                   %   progress label text={},
+                   group right shift=0,
+                   group top shift=0.7,
+                   group height=.3,
+                   group peaks width={0.2},
+                   inline]{1}{15}
+              %labels
+              %    \gantttitle{A project}{15}\\  % title level 1
+              \gantttitle[]{Aug.}{2}             % title level 2
+              \gantttitle[]{September}{4}                
+              \gantttitle[]{October}{5}               
+              \gantttitle[]{November}{4} \\ 
+    
+              % Testing
+              \ganttgroup[inline=false]{WP 5: Testing}{2}{15} \\
+              \ganttbar[inline=false]{WP 1 testing}{2}{7} \\
+              \ganttbar[inline=false]{WP 2 testing}{8}{12} \\
+              \ganttbar[inline=false]{WP 3 testing}{6}{11} \\
+              \ganttbar[inline=false]{WP 4 testing}{6}{10} \\
+              \ganttmilestone[inline=false]{Milestone: Done testing}{12} \\
+              \ganttbar[inline=false]{Final testing}{13}{15} \\
+              \ganttmilestone[inline=false]{Project done}{15} \\
+    
+              % Documentation
+              \ganttgroup[inline=false]{WP 6: Documentation}{1}{15} \\ \\
+    
+              %% Doc WP 1 I/O
+              \ganttgroup[inline=false]{WP 6.1: I/O Module doc}{2}{8} \\
+              \ganttbar[inline=false]{WP 1: General}{2}{3} \\
+              \ganttbar[inline=false]{WP 1: Camera}{5}{6} \\
+              \ganttbar[inline=false]{WP 1: Distance sensor}{7}{8} \\
+              \ganttmilestone[inline=false]{Wp 1: Doc done}{8} \\
+    
+              %% Doc WP 2 Motion control
+              \ganttgroup[inline=false]{WP 6.2: Motion controll doc}{3}{12} \\
+              \ganttbar[inline=false]{WP 2: Driving}{3}{4} \\
+              \ganttbar[inline=false]{WP 2: Turning}{4}{5} \\
+              \ganttbar[inline=false]{WP 2: Motion control algorithm}{6}{8} \\
+              \ganttbar[inline=false]{WP 2: Stopping}{9}{10} \\
+              \ganttbar[inline=false]{WP 2: Cross lane}{11}{12} \\
+              \ganttmilestone[inline=false]{WP 2: Doc done}{12} \\
+    
+              %% Doc WP 3 Image prossesing
+              \ganttgroup[inline=false]{WP 6.3: Image processing doc}{3}{10} \\
+              \ganttbar[inline=false]{WP 3: Lane detection}{3}{4} \\
+              \ganttbar[inline=false]{WP 3: Singel straight lane}{5}{6} \\
+              \ganttbar[inline=false]{WP 3: Single curved lane}{7}{8} \\
+              \ganttbar[inline=false]{WP 3: Cross lane detection}{9}{10} \\
+              \ganttmilestone[inline=false]{WP 3: Doc done}{10} \\
+    
+              %% Doc WP 4 Web interface
+              \ganttgroup[inline=false]{WP 6.4: Web interface doc}{10}{12} \\
+              \ganttbar[inline=false]{WP 4: Display Info}{10}{10} \\
+              \ganttbar[inline=false]{WP 4: Variable control}{10}{10} \\
+              \ganttbar[inline=false]{WP 4: Display Camera}{11}{11} \\
+              \ganttbar[inline=false]{WP 4: Display Camera filter}{11}{11} \\
+              \ganttbar[inline=false]{WP 4: Display Control robot}{12}{12} \\
+              \ganttmilestone[inline=false]{WP 4: Doc done}{12}
+    
+         \end{ganttchart}
+    \end{center}
 \end{document}
