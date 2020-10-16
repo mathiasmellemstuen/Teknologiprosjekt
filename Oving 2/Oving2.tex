@@ -22,26 +22,47 @@ The project fits for industrial warehouses, hospitals and anywhere robots are su
 The overall goal is to create a cost-efficient line-following robot that can do simple tasks such as carrying cargo from A to B. The robot should be able work in different scenarios (harbor, warehouse, hospitals etc).
 \\\\
 \textbf{Requirements}\\
+There are a few requirements and tasks that we will follow in order to get this robot to do what we want, here is a specified list over some of them:
 \begin{itemize}
-    \item Following any track with specific requirements.
-    \item Regulate angular and linear velocity.
-    \item Detect obstacles and respond to them. 
-    \item Carry small items as cargo.
-    \item Control and get values / status in a web interface.
+    \item Following any track with specific requirements. We were instructed to make our robot do the following: \begin{itemize}
+        \item Keep itself on the right hand lane, as if it was a car on a real road.
+        \item Turn right on every intersection or turn. (We are planning on implementing the ability to do more than just turning right, but we will keep this as the default as that is what we were instructed to do.)
+    \end{itemize} 
+    \item Regulate angular and linear velocity. \begin{itemize}
+        \item It is important for the robot to be able to adjust its velocity in order to not overshoot turns.
+    \end{itemize}
+    \item Detect obstacles and respond to them. \begin{itemize}
+        \item Configuring the visual sensor to detect obstacles within a certain range and slowing down to a halt in order to not crash into anything. 
+    \end{itemize}
+    \item Carry small items as cargo. \begin{itemize}
+        \item The robot has a flat surface with a few screws sticking up, which are ideal to carry smaller objects.
+    \end{itemize}
+    \item Control and get values / status in a web interface. \begin{itemize}
+        \item We will use a website as an interface, and implement remote controls to be able to take over and “drive” our robot. This interface will also contain values such as speed, angles and a live feed of what the robot is seeing through the cameras. 
+    \end{itemize}
 \end{itemize}
 \textbf{Limitations}
 \\
+As with any project there are limitations, either things we don’t have the ability to do or lack of time and resources. Here are a few we stumbled across: 
 \begin{itemize}
-	\item The robot will stop if it detects an obstacle instead of trying to move past it. 
-	\item Can’t carry too heavy/big objects.
-	\item The lines in the track must be in a constant color, it must be a contrast between the background and the track. 
+	\item Obstacle detection. \begin{itemize}
+        \item We are unable to make the robot move around obstacles, it can only stop and wait for the object to be removed.
+    \end{itemize}
+	\item Cargo weight. \begin{itemize}
+        \item The cargo can’t be too heavy as the robot lacks the power to carry heavier items.
+        \item The robot also lacks the ability to adjust speed according to the weight of the items carried, so the robot might lose cargo by going too fast.
+    \end{itemize}
+	\item Line detection. \begin{itemize}
+        \item The track can only be made of a single colour for contrast comparison.
+    \end{itemize}
 \end{itemize}
-\includegraphics[width=10cm]{flowdiagram}
-\\
 \textbf{Motion control algorithm}
 \\
+In order to make the robot do its job, we need a motion control algorithm that at least loosely follows the points under:
 \begin{enumerate}
-    \item Sample input data from the distance sensor and stop the robot if the distance is within a certain value. 
+    \item Sample input data from the distance sensor and stop the robot if the distance is within a certain value. \begin{itemize}
+        \item We will install a distance sensor on the front end of the robot, we will then be able to measure how far the robot currently is from an object that is in its path. The robot will then be able to stop when he is within x mm of the object. 
+    \end{itemize}
     \item Check data from the image processing if the track exists in the image. \begin{itemize}
         \item On track: Goto point 3. 
         \item Not on track: Drive around in circles until the track is found.
@@ -72,11 +93,18 @@ A function to control the wheels of the robot. The function should take two para
 \\\\
 \textbf{Image processing module}
 \\
+In order for the robot to detect the road it’s going to follow it will have to process images in real time, these images will be converted and scanned in order to make this as easy as possible:
 \begin{itemize}
     \item Get the image as an array of pixels from the I/O module. 
-    \item Convert the colors in the array to black/white.
-    \item Use the Hough transform algorithm to find the edges of the track.
-    \item Find the middle of the road.
+    \item Convert the colors in the array to black/white. \begin{itemize}
+        \item The robot is very limited when it comes to detecting colours, so to overcome that hurdle we will grayscale the image and use contrasting to make the image into black and white in order to detect the opposing colours.
+    \end{itemize}
+    \item Use the Hough transform algorithm to find the edges of the track. \begin{itemize}
+        \item Using the Hough transform algorithm we can find the edges of the track, with these we can create a sort of coordination system that will tell the robot where to go.
+    \end{itemize}
+    \item Find the middle of the road. \begin{itemize}
+        \item When we have the edges of the track and the coordination system it is easy to find the middle of the lane and stick to it.
+    \end{itemize}
     \item Return the middle of the road and the robots offset to the middle. 
 \end{itemize}
 \textbf{User interface} 
@@ -84,6 +112,7 @@ A function to control the wheels of the robot. The function should take two para
 The user interface is a web page that is locally hosted on the raspberry pi. The webserver is running within the python program. The web page is using API calls to collect data / give command to the python program. All of this is happening asynchronous with the rest of the python code. 
 \\\\
 \textbf{Installation and deployment of the solution (Implementation)}
+In order to implement and deploy our solution we will follow these steps:
 \begin{enumerate}
     \item Installing the raspbian OS on a microSD card. 
     \item Setting up the raspberry pi to host a WIFI network. 
@@ -93,25 +122,33 @@ The user interface is a web page that is locally hosted on the raspberry pi. The
     \item Opening port 80 on the firewall for the web interface. 
     \item Setting up a service in systemctl to run the python code when linux is booting.
 \end{enumerate}
-List of responsibilities: \\\\
+Here is a visual representation of how all the different modules connects: 
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{flowdiagram}
+\end{center}
+\textbf{Responsibilities} \\
+This is a list of the different responsibilities of the work packages. Everyone will do work in the different work packages, this list is only showing who is in charge of managing and leading the current work package. \\\\
 \begin{tabular}{ |c|c| }
     \hline
     \textbf{Work package (WP)} & \textbf{Responsibility} \\
     \hline
-    I/O module & x person \\
+    I/O module & Mathias \\
     \hline
-    Motion control module & x person \\
+    Motion control module & Tobias \\
     \hline
-    Image processing module & x person \\
+    Image processing module & Henrik \\
     \hline
-    Web interface & x person \\
+    Web interface & Ruben \\
     \hline
-    Testing & x person \\
+    Testing & Andreas \\
     \hline
-    Documentation & x person \\
+    Documentation & Erik \\
     \hline
 \end{tabular}
-
+\\\\\\
+\textbf{Gantt chart}
+\\
+This Gantt chart is visualizing the planned workflow of the project. 
 \begin{center}
     \begin{ganttchart}[%Specs
              y unit title=0.5cm,
@@ -252,4 +289,35 @@ List of responsibilities: \\\\
     
          \end{ganttchart}
     \end{center}
-\end{document}
+\textbf{Risks}\\
+There are always risks when implementing projects like this, some of the risks we can experience are: 
+\begin{itemize}
+    \item Camera lacking the resolution for our image processing algorithm. \begin{itemize}
+        \item One of the problems we might face is that the camera we are using will not work with our image processing algorithm. Some of the reasons it might not work is resolution or other specifications limitations on the camera we are using. 
+    \end{itemize}
+    \item Defect components (camera, distance sensor, etc.) \begin{itemize}
+        \item A risk when making a project that has multiple components is of course that some of the components we are using are broken in some way, this can be either easy to see physical damage and it can be hard to find internal damage. 
+    \end{itemize}
+    \item Bad placement of critical components (camera, distance sensor, etc.) \begin{itemize}
+        \item if the camera angle is either too high or too low the image processing could give bad results.
+    \end{itemize}
+    \item Code that doesn’t work the way we intended. \begin{itemize}
+        \item This could include everything from bugs and bad implementation to too high/low values.
+    \end{itemize}
+    \item Bad time management. \begin{itemize}
+        \item When working on a larger project we run the risk of giving each task too much or too little time. 
+    \end{itemize}
+\end{itemize}
+\textbf{Mitigation}\\
+Some of the ways we can hopefully mitigate these risks are:
+\begin{itemize}
+    \item Make sure that the components we use all have good enough specifications while still being affordable. \begin{itemize}
+        \item We can reduce the risk of limitations from components by carefully planning which components we need to use, finding out what specifications these components need to have, and making sure that we atleast fulfill the minimum requirements. 
+    \end{itemize}
+    \item Make sure that all components are working by thoroughly testing them before deployment. \begin{itemize}
+        \item This includes doing a physical inspection of them to try to see any broken parts, as well as thoroughly testing them before deployment. 
+    \end{itemize}
+    \item Thoroughly testing the code at each stage, to catch errors early and squash bugs. 
+    \item We can hopefully mitigate bad time management by thoroughly discussing and planning the project. 
+\end{itemize}
+\end{document}  
