@@ -22,6 +22,7 @@ camera.start_preview()
 
 sleep(2)
 
-print("TIME BEFORE:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-camera.capture("/var/www/control-panel/capture.jpg")
-print("TIME AFTER:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+while True: 
+    print("TIME BEFORE:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+    camera.capture("/var/www/control-panel/capture.jpg")
+    print("TIME AFTER:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
