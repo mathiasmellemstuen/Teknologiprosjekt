@@ -25,5 +25,7 @@ sleep(2)
 while True: 
     print("TIME BEFORE:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
     camera.capture("/var/www/control-panel/capture.jpg")
+    camera.close() 
     print("TIME AFTER:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
     sleep(0.5)
+
