@@ -1,2 +1,2 @@
 sudo git pull
-sudo python3 sources/main.py
+sudo python3 source/main.py
