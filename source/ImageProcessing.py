@@ -1,8 +1,6 @@
 from io import BytesIO
 from time import sleep
 from picamera import PiCamera
-import numpy
-import cv2
 from datetime import datetime
 #warmup = 2 # In seconds
 #print("Staring image processing module.")
