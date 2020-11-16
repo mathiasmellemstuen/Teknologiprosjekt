@@ -20,12 +20,11 @@ camera.resolution = (800, 600)
 
 print("Started.")
 sleep(2)
-while True: 
-    try: 
-
+try:
+    while True: 
         print("TIME BEFORE:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
         camera.capture("/var/www/control-panel/capture.jpg", quality=20)
         print("TIME AFTER:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
         sleep(0.2)
-    finally:
-        camera.close()
+except:
+    camera.close()
