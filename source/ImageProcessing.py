@@ -1,4 +1,5 @@
 import picamera
-import cv2 as cv
+import numpy
+import cv2
 
 print("Staring image processing module.")
