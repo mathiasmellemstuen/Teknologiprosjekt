@@ -141,7 +141,7 @@ def videoProcessed():
 
 def setProcessedImage(image):
     global processedImage
-    cannyImage = image
+    processedImage = image
 
 def run(): 
     app.run(host='0.0.0.0', debug = False, port=80)
