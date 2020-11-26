@@ -1,0 +1,111 @@
+
+body {
+    background-color:gray;
+    color:black;
+}
+h1 {
+    text-align:center; 
+    margin:0;
+}
+#cameraFeeds {
+    display:flex;
+    flex-flow: row wrap;
+    width: 932px;
+    float: left;
+    margin: 10px;
+    border: solid 2px black !important;
+}
+.feed {
+    height:300px; 
+    width:450px;
+    margin: 5px;
+    background-color: white;
+}
+#camTitle {
+    text-decoration-color: black;
+    float: left;
+}
+.sliders {
+    position:relative; 
+    display:flex; 
+    flex-direction:row;
+    float: left;
+    margin: 10px;
+    margin-bottom: 8px;
+    height: 280px;
+    width: 440px;
+    border: solid 2px black !important;
+    padding: 10px;
+}
+
+.label-div {
+    width:30%;
+}
+.input-div {
+    width:70%;
+}
+.input-div input {
+    width:90%;
+    margin:0;
+    padding:0; 
+    height:34px;
+}
+.label-div p {
+    margin:0;
+    height:34px; 
+}
+.input-div .sliderInput {
+    width:10%
+}
+
+h1, h2, h3, p {
+   color: white;
+}
+#resources {
+    float: left;
+    margin-left: 10px;
+    width: 314px;
+    height: 314px;
+    padding-left: 10px;
+
+    
+}
+ img {
+     border: solid 2px black;
+ }
+ #chartContainer {
+     float:left;
+     width:314px; 
+     height:314px; 
+ }
+ #res-container {
+    float:left; 
+    border: solid 2px black !important;
+    margin: 10px; 
+ }
+
+
+/* Form style */
+form {
+    position:relative; 
+    float: left;
+    margin: 10px;
+    margin-bottom: 8px;
+    height: 280px;
+    width: 440px;
+    border: solid 2px black !important;
+    padding: 10px;
+}
+
+form label {
+    width: 30%;
+}
+
+form input[type="range"] {
+    vertical-align: middle;
+    width: 60%;
+}
+
+form input[type="number"] {
+    width: 10%;
+}

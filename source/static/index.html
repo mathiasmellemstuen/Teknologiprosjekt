@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Robot Controlpanel</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="chart.min.js"></script>
+        <script src="script.js"></script>
+    </head>
+    <body> 
+        <h1>Control panel</h1>
+        <div id="cameraFeeds">
+            <img id="feed-original" class="feed" alt="Cam 1: Normal" src="/api/video/original" > 
+            <img id="feed-gray" class="feed" alt="Cam 2: Grayscale" src="/api/video/gray">
+            <img id="feed-binary" class="feed" alt="Cam 3: Binary" src="/api/video/binary">
+            <img id="feed-canny" class="feed" alt="Cam 4: Canny" src="/api/video/canny">
+        </div>
+        
+        <form>
+            <label>Resolution width: </label>
+            <input type="range" min="0" max="1000" step="10" id="resolutionWidth">
+            <input type="number" id="resolutionWidthTyped">
+
+            <label>Resolution height: </label>
+            <input type="range" min="0" max="1000" step="10" id="resolutionHeight">
+            <input type="number" id="resolutionHeightTyped">
+
+            <label>Framerate: </label>
+            <input type="range" min="0" max="60" step="1" id="framerate">
+            <input type="number" id="framerateTyped">
+
+            <label>Contrast: </label>
+            <input type="range" min="0" max="255" step="1" id="contrast">
+            <input type="number" id="contrastTyped">
+        </form>
+    </body>
+    <div id="res-container">
+        <div id="resources">
+            <p id="cpu">CPU Usage: </p>
+            <p id="cpuTemp">CPU Temp: </p>
+            <p id="mem">Memory Usage: </p>
+            <p id="networkUpload">Network Upload: </p>
+            <p id="networkDownload">Network Download: </p>
+        </div>
+        <div id="chartContainer">
+            <canvas id="chart1"/>
+        </div>
+    </div>
+</html>

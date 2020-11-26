@@ -1,30 +1,83 @@
-from io import BytesIO
-from time import sleep
-from picamera import PiCamera
+import numpy as np
+import cv2 as cv
 from datetime import datetime
-#warmup = 2 # In seconds
-#print("Staring image processing module.")
+from time import sleep
+import Benchmarking as benchmarking
+import threading
+import picamera 
+from picamera.array import PiRGBArray
+import config
 
-#stream = BytesIO() 
-#camera = PiCamera() 
-#camera.start_preview()
+threadRunning = False
+thread = None
+CONTRAST_VALUE = 200
+RESOLUTION_WIDTH = 800
+RESOLUTION_HEIGHT = 600
+FRAMERATE = 20
+original = None
+grey = None
+binary = None
+canny = None
 
-#print("Camera warmup: starting")
-#sleep(warmup)
-#print("Camera warmup: finished")
+#Initializing the pi-camera
+print("Initializing camera.") 
+camera = picamera.PiCamera()
+camera.resolution = (RESOLUTION_WIDTH, RESOLUTION_HEIGHT)
+camera.framerate = FRAMERATE
+sleep(1)
+print("Camera initialization done.")
 
-#camera.capture(stream, 'jpeg')
 
-camera = PiCamera()
-camera.resolution = (800, 600)
+def convertImageToGrayScale(image):
+    return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
-print("Started.")
-sleep(2)
-try:
-    while True: 
-        print("TIME BEFORE:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-        camera.capture("/var/www/control-panel/capture.jpg", quality=20)
-        print("TIME AFTER:", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-        sleep(0.2)
-except:
-    camera.close()
+def convertImageToBinary(image): 
+    return cv.threshold(image, CONTRAST_VALUE, 255, cv.THRESH_BINARY)[1]
+
+def convertImageToCanny(image):
+    return cv.Canny(image,50,150)
+
+def process():
+    global original, grey, binary, canny, camera
+
+    raw_capture = PiRGBArray(camera, size=(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
+
+    print("Image processing thread has started.")
+    for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
+        
+        if not threadRunning: 
+            break
+        
+        original = frame.array
+        #original = cv.imread("/var/www/control-panel/capture.jpg")
+        grey = convertImageToGrayScale(original)
+        binary = convertImageToBinary(grey)
+        canny = convertImageToCanny(binary)
+        raw_capture.truncate(0)
+
+def getOriginalImage():
+    ret, jpeg = cv.imencode('.jpg', original)
+    return jpeg.tobytes()
+
+def getGreyImage(): 
+    ret, jpeg = cv.imencode('.jpg', grey)
+    return jpeg.tobytes()
+
+def getBinaryImage(): 
+    ret, jpeg = cv.imencode('.jpg', binary)
+    return jpeg.tobytes()
+
+def getCannyImage():
+    ret, jpeg = cv.imencode('.jpg', canny)
+    return jpeg.tobytes()
+
+def startImageProcessingThread(): 
+    global thread, threadRunning
+    threadRunning = True
+    thread = threading.Thread(target = process)
+    thread.start()
+
+def stopImageProcessingThread(): 
+    global thread, threadRunning
+    threadRunning = False
+    thread.join()
