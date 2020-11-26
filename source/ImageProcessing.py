@@ -18,7 +18,7 @@ original = None
 grey = None
 binary = None
 canny = None
-
+processed = None
 #Initializing the pi-camera
 print("Initializing camera.") 
 camera = picamera.PiCamera()
@@ -38,7 +38,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def process():
-    global original, grey, binary, canny, camera
+    global original, grey, binary, canny, camera, processed
 
     raw_capture = PiRGBArray(camera, size=(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
 
@@ -53,6 +53,7 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
+        processed = canny # Setting the processed image to canny for now.  
         raw_capture.truncate(0)
 
 def getOriginalImage():
@@ -68,7 +69,7 @@ def getBinaryImage():
     return jpeg.tobytes()
 
 def getProcessedImage():
-    ret, jpeg = cv.imencode('.jpg', canny)
+    ret, jpeg = cv.imencode('.jpg', processed)
     return jpeg.tobytes()
 
 def startImageProcessingThread(): 
