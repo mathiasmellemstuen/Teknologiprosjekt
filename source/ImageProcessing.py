@@ -57,7 +57,7 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        processed = canny # Setting the processed image to hough for now.  
+        processed = hough # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
 
 def getOriginalImage():
