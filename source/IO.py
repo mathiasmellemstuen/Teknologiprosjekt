@@ -22,4 +22,4 @@ while True:
     ui.setOriginalImage(ip.getOriginalImage())
     ui.setGrayImage(ip.getGreyImage())
     ui.setBinaryImage(ip.getBinaryImage())
-    ui.setCannyImage(ip.getCannyImage())
+    ui.setProcessedImage(ip.getProcessedImage())

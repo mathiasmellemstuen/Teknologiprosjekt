@@ -67,7 +67,7 @@ def getBinaryImage():
     ret, jpeg = cv.imencode('.jpg', binary)
     return jpeg.tobytes()
 
-def getCannyImage():
+def getProcessedImage():
     ret, jpeg = cv.imencode('.jpg', canny)
     return jpeg.tobytes()
 

@@ -13,7 +13,7 @@ log.setLevel(logging.ERROR)
 originalImage = None
 grayImage = None
 binaryImage = None
-cannyImage = None
+processedImage = None
 
 text = [
     {'message' : 'Hello'},
@@ -125,22 +125,22 @@ def setBinaryImage(image):
     global binaryImage
     binaryImage = image
 
-## Canny image -------
-def genCannyImage():
-    global cannyImage
+## Processed image -------
+def genProcessedImage():
+    global processedImage
 
     while True:
         #get camera frame
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
-        yield cannyImage
+        yield processedImage
         yield b'\r\n\r\n'
 
-@app.route('/api/video/canny')
-def videoCanny():
-    return Response(genCannyImage(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+@app.route('/api/video/processed')
+def videoProcessed():
+    return Response(genProcessedImage(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-def setCannyImage(image):
-    global cannyImage
+def setProcessedImage(image):
+    global processedImage
     cannyImage = image
 
 def run(): 
