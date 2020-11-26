@@ -37,6 +37,9 @@ def convertImageToBinary(image):
 def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
+def calculateHoughImage(image): 
+    return cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
+
 def process():
     global original, grey, binary, canny, camera, processed
 
@@ -53,7 +56,8 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
-        processed = canny # Setting the processed image to canny for now.  
+        hough = calculateHoughImage(canny)
+        processed = hough # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
 
 def getOriginalImage():
