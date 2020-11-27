@@ -41,7 +41,6 @@ def calculateHoughImage(image):
     lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
     if lines is None: 
         lines = []
-        print("Warning: Hough lines calculation is None. Returning [].")
 
     return lines
 
@@ -80,7 +79,6 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        print(hough)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255)) # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
 
