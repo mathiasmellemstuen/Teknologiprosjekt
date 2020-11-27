@@ -137,8 +137,11 @@ def genProcessedImage():
 
 @app.route('/api/video/processed')
 def videoProcessed():
-    b.stop()
-    b.printExecutionTime()
+    try: 
+        b.stop()
+        b.printExecutionTime()
+    except:
+        pass
     b.start()
     return Response(genProcessedImage(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
