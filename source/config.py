@@ -18,7 +18,7 @@ def int_please_object_hook(obj):
 
 def save(data):
     global config
-    config = json.loads(json.dump(data), object_hook=int_please_object_hook)
+    config = json.loads(json.dumps(data), object_hook=int_please_object_hook)
     with open(FILE,"w") as f:
         json.dump(data, f)
 
