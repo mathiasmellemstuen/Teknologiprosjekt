@@ -7,7 +7,7 @@ class CurrentConfig:
     
     @staticmethod
     def get():
-        return config
+        return CurrentConfig.config
 
 def int_please_object_hook(obj):
     rv = {}
