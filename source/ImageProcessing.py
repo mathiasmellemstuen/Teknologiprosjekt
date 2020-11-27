@@ -18,6 +18,7 @@ processed = None
 
 def updateCameraValues():
     global camera
+    print(config.get())
     camera.resolution = (config.get()["resolutionWidth"], config.get()["resolutionHeight"])
     camera.framerate = config.get()["framerate"]
 
