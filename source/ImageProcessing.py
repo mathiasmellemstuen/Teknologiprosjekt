@@ -47,7 +47,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def calculateHoughImage(image): 
-    lines = cv.HoughLinesP(image,1, np.pi / 180, 150, None, 0, 0)
+    lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
     if lines is None: 
         lines = []
 
