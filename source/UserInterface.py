@@ -61,13 +61,13 @@ def resourcesGet():
 # Config -------
 @app.route('/api/config', methods=['GET'])
 def configGet():
-    return jsonify(config.get())
+    return jsonify(config.CurrentConfig.get())
 
 @app.route('/api/config', methods=['POST'])
 def configPost():
     newConfig = request.get_json(force=True)
     config.save(newConfig)
-    return jsonify(config.get())
+    return jsonify(config.CurrentConfig.get())
 
 
 # Camera Streaming -------

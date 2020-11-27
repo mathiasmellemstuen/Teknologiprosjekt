@@ -2,7 +2,12 @@ import json
 
 FILE = "config.json"
 
-config = {}
+class CurrentConfig:
+    config = {}
+    
+    @staticmethod
+    def get():
+        return config
 
 def int_please_object_hook(obj):
     rv = {}
@@ -17,18 +22,13 @@ def int_please_object_hook(obj):
     return rv
 
 def save(data):
-    global config
-    config = json.loads(json.dumps(data), object_hook=int_please_object_hook)
+    CurrentConfig.config = json.loads(json.dumps(data), object_hook=int_please_object_hook)
 
     with open(FILE,"w") as f:
         json.dump(data, f)
 
 def load():
-    global config
     print("Loadig config file.") 
     with open(FILE,"r") as f:
-        config = json.load(f, object_hook=int_please_object_hook)
+        CurrentConfig.config = json.load(f, object_hook=int_please_object_hook)
 
-def get():
-    global config
-    return config
