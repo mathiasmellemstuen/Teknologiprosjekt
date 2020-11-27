@@ -15,7 +15,7 @@ def int_please_object_hook(obj):
     return rv
 
 def save(data):
-    CurrentConfig.config = json.loads(json.dumps(data), object_hook=int_please_object_hook)
+    #CurrentConfig.config = json.loads(json.dumps(data), object_hook=int_please_object_hook)
 
     with open(FILE,"w") as f:
         json.dump(data, f)
@@ -23,3 +23,4 @@ def save(data):
 def load(): 
     with open(FILE,"r") as f:
         return json.load(f, object_hook=int_please_object_hook)
+
