@@ -16,6 +16,11 @@ binary = None
 canny = None
 processed = None
 
+def updateCameraValues():
+    global camera
+    camera.resolution = (config.get().resolutionWidth, config.get().resolutionHeight)
+    camera.framerate = config.get().framerate
+
 #Initializing the pi-camera
 print("Initializing camera.") 
 camera = picamera.PiCamera()
@@ -23,11 +28,6 @@ updateCameraValues()
 
 sleep(1)
 print("Camera initialization done.")
-
-def updateCameraValues():
-    global camera
-    camera.resolution = (config.get().resolutionWidth, config.get().resolutionHeight)
-    camera.framerate = config.get().framerate
 
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
