@@ -18,7 +18,6 @@ def int_please_object_hook(obj):
 
 def save(data):
     global config
-    data = json.dumps(data)
     config = json.loads(data, object_hook=int_please_object_hook)
     with open(FILE,"w") as f:
         json.dump(data, f)
@@ -27,7 +26,7 @@ def load():
     global config
     print("Loadig config file.") 
     with open(FILE,"r") as f:
-        config = json.load(f)
+        config = json.load(f, object_hook=int_please_object_hook)
 
 def get():
     global config
