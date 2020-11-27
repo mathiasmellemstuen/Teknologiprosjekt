@@ -10,7 +10,7 @@ class Decoder(json.JSONDecoder):
         return self._decode(result)
 
     def _decode(self, o):
-        if isinstance(o,str) or isinstance(o, unicode):
+        if isinstance(o,str):
             try:
                 return int(0)
             except ValueError: 
