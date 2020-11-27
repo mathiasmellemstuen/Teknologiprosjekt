@@ -10,10 +10,6 @@ import config
 
 threadRunning = False
 thread = None
-CONTRAST_VALUE = 200
-RESOLUTION_WIDTH = 800
-RESOLUTION_HEIGHT = 600
-FRAMERATE = 20
 original = None
 grey = None
 binary = None
@@ -23,16 +19,21 @@ processed = None
 #Initializing the pi-camera
 print("Initializing camera.") 
 camera = picamera.PiCamera()
-camera.resolution = (RESOLUTION_WIDTH, RESOLUTION_HEIGHT)
-camera.framerate = FRAMERATE
+updateCameraValues()
+
 sleep(1)
 print("Camera initialization done.")
+
+def updateCameraValues():
+    global camera
+    camera.resolution = (config.get().resolutionWidth, config.get().resolutionHeight)
+    camera.framerate = config.get().framerate
 
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
 def convertImageToBinary(image): 
-    return cv.threshold(image, CONTRAST_VALUE, 255, cv.THRESH_BINARY)[1]
+    return cv.threshold(image, config.get().contrast, 255, cv.THRESH_BINARY)[1]
 
 def convertImageToCanny(image):
     return cv.Canny(image,50,150)

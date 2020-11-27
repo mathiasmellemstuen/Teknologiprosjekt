@@ -19,6 +19,7 @@ time.sleep(2) # Waiting for the initialization of the modules above.
 print("All modules initialized. Started successfully") 
 
 while True:
+    ip.updateCameraValues()
     ui.setOriginalImage(ip.getOriginalImage())
     ui.setGrayImage(ip.getGreyImage())
     ui.setBinaryImage(ip.getBinaryImage())
