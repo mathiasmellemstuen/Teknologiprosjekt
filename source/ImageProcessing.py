@@ -19,6 +19,7 @@ grey = None
 binary = None
 canny = None
 processed = None
+
 #Initializing the pi-camera
 print("Initializing camera.") 
 camera = picamera.PiCamera()
@@ -26,7 +27,6 @@ camera.resolution = (RESOLUTION_WIDTH, RESOLUTION_HEIGHT)
 camera.framerate = FRAMERATE
 sleep(1)
 print("Camera initialization done.")
-
 
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
@@ -42,8 +42,22 @@ def calculateHoughImage(image):
     if lines is None: 
         lines = []
         print("Warning: Hough lines calculation is None. Returning [].")
-    
+
     return lines
+
+def addHoughLinesOnImage(image, lines, color):
+    for rho, theta in lines[0]:
+        a = np.cos(theta)
+        b = np.sin(theta)
+        x0 = a * rho
+        y0 = b * rho
+        x1 = int(x0 + 1000*(-b))
+        y1 = int(y0 + 1000*(a))
+        x2 = int(x0 - 1000*(-b))
+        y2 = int(y0 - 1000*(a))
+        cv.line(image, (x1,y1), (x2,y2), color, 2)
+    
+    return image
 
 def process():
     global original, grey, binary, canny, camera, processed
@@ -63,7 +77,7 @@ def process():
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
         print(hough)
-        processed = canny # Setting the processed image to hough for now.  
+        processed = addHoughLinesOnImage(canny, hough, (0,0,255)) # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
 
 def getOriginalImage():
