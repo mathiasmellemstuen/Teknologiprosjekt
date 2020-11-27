@@ -67,7 +67,7 @@ def configGet():
 def configPost():
     newConfig = request.get_json(force=True)
     config.save(newConfig)
-    return jsonify(config.CurrentConfig.get())
+    return jsonify(config.load())
 
 
 # Camera Streaming -------
