@@ -27,6 +27,7 @@ class Decoder(json.JSONDecoder):
 
 def save(data):
     global config
+    data = json.dumps(data)
     config = json.loads(data, cls=Decoder)
     with open(FILE,"w") as f:
         json.dump(data, f)
