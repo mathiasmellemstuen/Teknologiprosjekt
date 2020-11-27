@@ -61,7 +61,7 @@ def resourcesGet():
 # Config -------
 @app.route('/api/config', methods=['GET'])
 def configGet():
-    return jsonify(config.CurrentConfig.get())
+    return jsonify(config.load())
 
 @app.route('/api/config', methods=['POST'])
 def configPost():

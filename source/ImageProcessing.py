@@ -19,8 +19,8 @@ processed = None
 def updateCameraValues():
     global camera
     print(config.CurrentConfig.get())
-    camera.resolution = (config.CurrentConfig.get()["resolutionWidth"], config.CurrentConfig.get()["resolutionHeight"])
-    camera.framerate = config.CurrentConfig.get()["framerate"]
+    camera.resolution = (config.load()["resolutionWidth"], config.load()["resolutionHeight"])
+    camera.framerate = config.load()["framerate"]
 
 #Initializing the pi-camera
 print("Initializing camera.") 
@@ -34,7 +34,7 @@ def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
 def convertImageToBinary(image): 
-    return cv.threshold(image, config.CurrentConfig.get()["contrast"], 255, cv.THRESH_BINARY)[1]
+    return cv.threshold(image, config.load()["contrast"], 255, cv.THRESH_BINARY)[1]
 
 def convertImageToCanny(image):
     return cv.Canny(image,50,150)
