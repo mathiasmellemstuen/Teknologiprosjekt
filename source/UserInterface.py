@@ -17,11 +17,6 @@ grayImage = None
 binaryImage = None
 processedImage = None
 
-text = [
-    {'message' : 'Hello'},
-    {'message' : 'world'}
-]
-
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
@@ -36,18 +31,6 @@ def post():
     text.append(newText)
 
     return jsonify(text)
-
-
-# Sliders -----------
-#@app.route('/api/config', methods=["GET"])
-#def getRange():
-#    return jsonify(config.get())
-
-#@app.route('/api/config', methods=["POST"])
-#def rangeFinder():
-#    slider = request.form["slider"]
-#    return slider
-
 
 # System resources ------- 
 @app.route("/api/resources", methods=["GET"])

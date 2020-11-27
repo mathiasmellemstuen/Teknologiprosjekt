@@ -26,8 +26,6 @@ def updateCameraValues():
 print("Initializing camera.") 
 camera = picamera.PiCamera()
 updateCameraValues()
-
-
 print("Camera initialization done.")
 print("--------------------")
 print("|Camera values:")
@@ -37,6 +35,7 @@ print("|Framerate:", config.load()["framerate"])
 print("|Contrast:", config.load()["contrast"])
 print("--------------------")
 sleep(1)
+
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
@@ -79,15 +78,6 @@ def process():
     print("Image processing thread has started.")
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
         
-        if not threadRunning: 
-            break
-        try:
-            benchmarking.stop()
-            benchmarking.printExecutionTime()
-        except:
-            pass
-        benchmarking.start()
-
         original = frame.array
         #original = cv.imread("/var/www/control-panel/capture.jpg")
         grey = convertImageToGrayScale(original)
