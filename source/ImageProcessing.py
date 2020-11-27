@@ -81,7 +81,13 @@ def process():
         
         if not threadRunning: 
             break
-        
+        try:
+            benchmarking.stop()
+            benchmarking.printExecutionTime()
+        except:
+            pass
+        benchmarking.start()
+
         original = frame.array
         #original = cv.imread("/var/www/control-panel/capture.jpg")
         grey = convertImageToGrayScale(original)
@@ -90,7 +96,7 @@ def process():
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255)) # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
-        sleep(1)
+
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)

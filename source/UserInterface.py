@@ -131,15 +131,7 @@ def setBinaryImage(image):
 def genProcessedImage():
     global processedImage
 
-    while True:
-        time.sleep(1)
-        #get camera frame
-        try:
-            b.stop()
-            b.printExecutionTime()
-        except:
-            pass
-        b.start()
+    while True:  
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield processedImage
         yield b'\r\n\r\n'
