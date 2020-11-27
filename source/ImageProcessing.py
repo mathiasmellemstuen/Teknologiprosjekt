@@ -7,6 +7,7 @@ import threading
 import picamera 
 from picamera.array import PiRGBArray
 import config
+import json
 
 threadRunning = False
 thread = None
@@ -42,7 +43,11 @@ def convertImageToGrayScale(image):
 
 def convertImageToBinary(image):
     global contrast
-    newContrast = config.load()["contrast"]
+    try:
+        newContrast = config.load()["contrast"]
+    except json.decoder.JSONDecodeError: 
+       newContrast = None
+
     contrast = newContrast if newContrast is not None else contrast
 
     return cv.threshold(image, contrast, 255, cv.THRESH_BINARY)[1]
