@@ -27,7 +27,7 @@ print("Initializing camera.")
 camera = picamera.PiCamera()
 updateCameraValues()
 
-sleep(1)
+
 print("Camera initialization done.")
 print("--------------------")
 print("|Camera values:")
@@ -35,6 +35,7 @@ print("|Resolution width:", config.load()["resolutionWidth"])
 print("|Resolution height:", config.load()["resolutionHeight"])
 print("|Contrast:",config.load()["contrast"])
 print("--------------------")
+sleep(1)
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
@@ -45,7 +46,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def calculateHoughImage(image): 
-    lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
+    lines = cv.HoughLinesP(image,1, np.pi / 180, 150, None, 0, 0)
     if lines is None: 
         lines = []
 
