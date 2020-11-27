@@ -46,6 +46,10 @@ def calculateHoughImage(image):
     return lines
 
 def addHoughLinesOnImage(image, lines, color):
+
+    if len(lines) == 0: 
+        return image
+
     for rho, theta in lines[0]:
         a = np.cos(theta)
         b = np.sin(theta)
