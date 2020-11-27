@@ -90,6 +90,7 @@ def process():
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255)) # Setting the processed image to hough for now.  
         raw_capture.truncate(0)
+        sleep(1)
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)
