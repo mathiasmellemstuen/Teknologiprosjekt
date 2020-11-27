@@ -7,7 +7,7 @@ config = {}
 def int_please_object_hook(obj):
     rv = {}
     for k, v in obj.items():
-        if isinstance(v, basestring):
+        if isinstance(v, str):
             try:
                 rv[k] = int(v)
             except ValueError:
