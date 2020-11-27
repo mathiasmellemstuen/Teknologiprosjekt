@@ -16,6 +16,7 @@ binary = None
 canny = None
 processed = None
 
+contrast = 128
 def updateCameraValues():
     global camera
 
@@ -39,8 +40,12 @@ sleep(1)
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
-def convertImageToBinary(image): 
-    return cv.threshold(image, config.load()["contrast"], 255, cv.THRESH_BINARY)[1]
+def convertImageToBinary(image):
+    global contrast
+    newContrast = config.load()["contrast"]
+    contrast = newContrast if newContrast is not None else contrast
+
+    return cv.threshold(image, contrast, 255, cv.THRESH_BINARY)[1]
 
 def convertImageToCanny(image):
     return cv.Canny(image,50,150)
