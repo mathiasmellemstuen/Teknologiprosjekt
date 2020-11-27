@@ -67,7 +67,7 @@ def addHoughLinesOnImage(image, lines, color):
         y1 = int(y0 + 1000*(a))
         x2 = int(x0 - 1000*(-b))
         y2 = int(y0 - 1000*(a))
-        cv.line(image, (x1,y1), (x2,y2), color, 2)
+        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
     
     return image
 
