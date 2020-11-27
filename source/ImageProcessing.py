@@ -29,7 +29,12 @@ updateCameraValues()
 
 sleep(1)
 print("Camera initialization done.")
-
+print("--------------------")
+print("|Camera values:")
+print("|Resolution width:", config.load()["resolutionWidth"])
+print("|Resolution height:", config.load()["resolutionHeight"])
+print("|Contrast:",config.load()["contrast"])
+print("--------------------")
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
 
