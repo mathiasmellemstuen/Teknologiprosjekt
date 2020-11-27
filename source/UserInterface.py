@@ -3,7 +3,7 @@ import threading
 import config
 import systemResources as sysres
 import logging
-
+import Benchmarking as b
 app = Flask(__name__, static_url_path="", static_folder="static")
 
 #Changing logging level to error.
@@ -137,6 +137,9 @@ def genProcessedImage():
 
 @app.route('/api/video/processed')
 def videoProcessed():
+    b.stop()
+    b.printExecutionTime()
+    b.start()
     return Response(genProcessedImage(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 def setProcessedImage(image):
