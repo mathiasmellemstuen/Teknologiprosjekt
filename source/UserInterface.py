@@ -130,6 +130,7 @@ def genProcessedImage():
     global processedImage
 
     while True:
+        sleep(1)
         #get camera frame
         try:
             b.stop()
