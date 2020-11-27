@@ -67,7 +67,7 @@ def addHoughLinesOnImage(image, lines, color):
 def process():
     global original, grey, binary, canny, camera, processed
 
-    raw_capture = PiRGBArray(camera, size=(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
+    raw_capture = PiRGBArray(camera, size=(config.load()["resolutionWidth"], config.load()["resolutionHeight"]))
 
     print("Image processing thread has started.")
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
