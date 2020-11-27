@@ -25,38 +25,6 @@ h1 {
     text-decoration-color: black;
     float: left;
 }
-.sliders {
-    position:relative; 
-    display:flex; 
-    flex-direction:row;
-    float: left;
-    margin: 10px;
-    margin-bottom: 8px;
-    height: 280px;
-    width: 440px;
-    border: solid 2px black !important;
-    padding: 10px;
-}
-
-.label-div {
-    width:30%;
-}
-.input-div {
-    width:70%;
-}
-.input-div input {
-    width:90%;
-    margin:0;
-    padding:0; 
-    height:34px;
-}
-.label-div p {
-    margin:0;
-    height:34px; 
-}
-.input-div .sliderInput {
-    width:10%
-}
 
 h1, h2, h3, p {
    color: white;
@@ -82,6 +50,7 @@ h1, h2, h3, p {
     float:left; 
     border: solid 2px black !important;
     margin: 10px; 
+    padding: 10px;
  }
 
 
@@ -92,18 +61,19 @@ form {
     margin: 10px;
     margin-bottom: 8px;
     height: 280px;
-    width: 440px;
+    width: 648px;
     border: solid 2px black !important;
     padding: 10px;
 }
 
 form label {
+    display: inline-block;
     width: 30%;
 }
 
 form input[type="range"] {
     vertical-align: middle;
-    width: 60%;
+    width: 55%;
 }
 
 form input[type="number"] {

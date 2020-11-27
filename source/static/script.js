@@ -5,13 +5,15 @@ var chart1;
 
 function formToJson(form) {
     var json = "{"
-    
-    for (i = 0; i < form.length; i++) {
-        key = form[i].attributes.name.nodeValue
-        val = form[i].valueAsNumber
-        
-        json += '"'+key + '":"' + val + '"';
-        json += i != form.length - 1 ? "," : "}"; 
+
+    for (i = 0; i < form.length; i = i + 2) {
+        key = form[i].id;
+        val = form[i].value;
+
+        form[i + 1].value = form[i].value;
+
+        json += '"' + key + '":"' + val + '"';
+        json += i != form.length - 2 ? "," : "}";
     }
 
     return JSON.stringify(JSON.parse(json));
@@ -23,9 +25,9 @@ function jsonToForm(json, form) {
     console.log(obj);
     for (const [key, value] of Object.entries(obj)) {
         form.elements.namedItem(key).value = value;
-        form.elements.namedItem(key + "typed") = value;
+        form.elements.namedItem(key + "Typed").value = value;
 
-        console.log("Change " + key + " to " + val);
+        console.log("Change " + key + " to " + value);
     }
 }
 
