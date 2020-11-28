@@ -21,7 +21,6 @@ def setVelosity():
     try:
         speed = getSpeed()
         turn = getTurn()
-        break
     except:
         print("Did not load speed and turn, stopping for this loop")
         speed = defaultSpeed
@@ -30,3 +29,6 @@ def setVelosity():
     turn = [speed * turn, speed * (turn * -1)]
 
     robot.steer(turn[0], turn[1])
+
+while true:
+    setVelosity()
