@@ -66,8 +66,8 @@ def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
         return image
-    image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
-    print(lines)
+
+    image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
     for line in lines:
         for x1,y1,x2,y2 in line:
             cv.line(image, (x1,y1), (x2,y2), color, 2)
