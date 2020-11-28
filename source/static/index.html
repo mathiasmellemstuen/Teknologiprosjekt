@@ -7,12 +7,15 @@
     </head>
     <body> 
         <h1>Control panel</h1>
-        <div id="cameraFeeds">
-            <img id="feed-original" class="feed" alt="Cam 1: Normal" src="/api/video/original" > 
-            <img id="feed-gray" class="feed" alt="Cam 2: Grayscale" src="/api/video/gray">
-            <img id="feed-binary" class="feed" alt="Cam 3: Binary" src="/api/video/binary">
-            <img id="feed-processed" class="feed" alt="Cam 4: Processed" src="/api/video/processed">
-        </div>
+	<div id="left-box">
+	    <div id="cameraFeeds">
+                <img id="feed-original" class="feed" alt="Cam 1: Normal" src="/api/video/original" > 
+                <img id="feed-gray" class="feed" alt="Cam 2: Grayscale" src="/api/video/gray">
+                <img id="feed-binary" class="feed" alt="Cam 3: Binary" src="/api/video/binary">
+                <img id="feed-processed" class="feed" alt="Cam 4: Processed" src="/api/video/processed">
+            </div>
+	</div>
+	<div id="right-box">
         
         <form>
 	    <h3>Video properties (Needs restart when changed)</h3>
@@ -78,17 +81,18 @@
             <input type="range" min="-180" max="180" step="1" id="rotation">
             <input type="number" id="rotationTyped" readonly>
         </form>
+    	<div id="res-container">
+        	<div id="resources">
+            	    <p id="cpu">CPU Usage: </p>
+            	    <p id="cpuTemp">CPU Temp: </p>
+            	    <p id="mem">Memory Usage: </p>
+            	    <p id="networkUpload">Network Upload: </p>
+            	    <p id="networkDownload">Network Download: </p>
+        	</div>
+            <div id="chartContainer">
+                <canvas id="chart1"/>
+            </div>
+        </div>
+        </div>
     </body>
-    <div id="res-container">
-        <div id="resources">
-            <p id="cpu">CPU Usage: </p>
-            <p id="cpuTemp">CPU Temp: </p>
-            <p id="mem">Memory Usage: </p>
-            <p id="networkUpload">Network Upload: </p>
-            <p id="networkDownload">Network Download: </p>
-        </div>
-        <div id="chartContainer">
-            <canvas id="chart1"/>
-        </div>
-    </div>
 </html>
