@@ -79,3 +79,7 @@ form input[type="range"] {
 form input[type="number"] {
     width: 10%;
 }
+
+form h3 {
+    margin: 18.72 0 0 0;
+}
