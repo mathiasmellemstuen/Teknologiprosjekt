@@ -56,7 +56,6 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def calculateHoughImage(image): 
-#    lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
     lines = cv.HoughLinesP(image,1,np.pi / 180,100,100,100,10)
     if lines is None: 
         lines = []
@@ -64,31 +63,14 @@ def calculateHoughImage(image):
     return lines
 
 def addHoughLinesOnImage(image, lines, color):
-    #print(image)
-    #print("This is line image.") 
-    #image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
-    #image = cv.line(image,(0,0),(300,300),(0,0,240),10)
-    #return image
-    if len(lines) == 0: 
-        print("Could not add hough lines. Returning.")
+
+    if len(lines) == 0:  
         return image
-    image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
-    print(lines)
+
+    image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
     for line in lines:
         for x1,y1,x2,y2 in line:
             cv.line(image, (x1,y1), (x2,y2), color, 2)
-#    for rho, theta in lines[0]:
-#        a = np.cos(theta)
-#        b = np.sin(theta)
-#        x0 = a * rho
-#        y0 = b * rho
-#        x1 = int(x0 + 1000*(-b))
-#        y1 = int(y0 + 1000*(a))
-#        x2 = int(x0 - 1000*(-b))
-#        y2 = int(y0 - 1000*(a))
-#        print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
-#        image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
-#        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
 
     return image
 
@@ -97,19 +79,15 @@ def process():
 
     raw_capture = PiRGBArray(camera, size=(config.load()["resolutionWidth"], config.load()["resolutionHeight"]))
 
-    print("Image processing thread has started.")
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
         
         original = frame.array
-        #original = cv.imread("/var/www/control-panel/capture.jpg")
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        houghImage = addHoughLinesOnImage(canny, hough, (0,0,255))
-        processed = houghImage  
+        processed = addHoughLinesOnImage(canny, hough, (0,0,255))
         raw_capture.truncate(0)
-
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)

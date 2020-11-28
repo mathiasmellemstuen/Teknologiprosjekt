@@ -7,10 +7,19 @@ h1 {
     text-align:center; 
     margin:0;
 }
+#left-box {
+	width:50%;
+	float:left;
+}
+#right-box {
+	width:50%;
+	float:right;
+}
 #cameraFeeds {
+    position:relative; 
     display:flex;
     flex-flow: row wrap;
-    width: 932px;
+    width:100%;
     float: left;
     margin: 10px;
     border: solid 2px black !important;
@@ -30,10 +39,7 @@ h1, h2, h3, p {
    color: white;
 }
 #resources {
-    float: left;
     margin-left: 10px;
-    width: 314px;
-    height: 314px;
     padding-left: 10px;
 
     
@@ -42,15 +48,13 @@ h1, h2, h3, p {
      border: solid 2px black;
  }
  #chartContainer {
-     float:left;
-     width:314px; 
-     height:314px; 
  }
  #res-container {
-    float:left; 
     border: solid 2px black !important;
     margin: 10px; 
     padding: 10px;
+    position:relative; 
+    width:100%; 
  }
 
 
@@ -60,8 +64,7 @@ form {
     float: left;
     margin: 10px;
     margin-bottom: 8px;
-    height: 280px;
-    width: 648px;
+    width: 100% 
     border: solid 2px black !important;
     padding: 10px;
 }
