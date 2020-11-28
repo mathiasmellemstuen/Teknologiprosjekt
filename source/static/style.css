@@ -1,4 +1,3 @@
-
 body {
     background-color:gray;
     color:black;
@@ -30,24 +29,21 @@ h1 {
     margin: 5px;
     background-color: white;
 }
-#camTitle {
-    text-decoration-color: black;
-    float: left;
-}
-
 h1, h2, h3, p {
    color: white;
 }
 #resources {
-    margin-left: 10px;
-    padding-left: 10px;
-
-    
+	position:relative; 
+	width:50%; 
+	float:left;
 }
- img {
+img {
      border: solid 2px black;
  }
  #chartContainer {
+	position:relative; 
+        width:50%; 
+	float:right;	
  }
  #res-container {
     border: solid 2px black !important;
@@ -56,29 +52,22 @@ h1, h2, h3, p {
     position:relative; 
     width:100%; 
  }
-
-
-/* Form style */
 form {
-    position:relative; 
-    float: left;
+    position:relative;
     margin: 10px;
     margin-bottom: 8px;
     width: 100% 
     border: solid 2px black !important;
     padding: 10px;
 }
-
 form label {
     display: inline-block;
     width: 30%;
 }
-
 form input[type="range"] {
     vertical-align: middle;
     width: 55%;
 }
-
 form input[type="number"] {
     width: 10%;
 }
