@@ -65,8 +65,8 @@ def calculateHoughImage(image):
 def addHoughLinesOnImage(image, lines, color):
     print(image)
     print("This is line image.") 
-    image = image.convert("RGB") 
-    print(cv.line(image,(0,0),(300,300),(0,0,240),10))
+    image = cv2.cvtColor(image, cv.CV_GRAY2RGB) 
+    image = cv.line(image,(0,0),(300,300),(0,0,240),10)
     return image
     #if len(lines) == 0: 
     #    print("Could not add hough lines. Returning.")
