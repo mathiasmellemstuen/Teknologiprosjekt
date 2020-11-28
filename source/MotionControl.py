@@ -4,7 +4,7 @@ import config
 defaltSpeed = 0
 defaultTurn = 0
 
-speed = 0   # This is the speed of the robot       |Int     | -100 -> 100
+speed = 10   # This is the speed of the robot       |Int     | -100 -> 100
 turn = 0    # This is the turning rate of the robo |Float   | -1 -> 1
 
 robot = EasyGoPiGo3()
@@ -19,8 +19,8 @@ def setVelosity():
     global speed, turn, robot
     
     try:
-        speed = getSpeed()
-        turn = getTurn()
+        speed = 10# getSpeed()
+        turn = 0# getTurn()
     except:
         print("Did not load speed and turn, stopping for this loop")
         speed = defaultSpeed
@@ -28,7 +28,9 @@ def setVelosity():
 
     turn = [speed * turn, speed * (turn * -1)]
 
-    robot.steer(turn[0], turn[1])
+    print(turn)
 
-while true:
+    robot.steer(0, 0)
+
+while True:
     setVelosity()
