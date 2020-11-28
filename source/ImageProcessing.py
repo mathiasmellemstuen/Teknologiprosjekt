@@ -83,7 +83,7 @@ def addHoughLinesOnImage(image, lines, color):
         y2 = int(y0 - 1000*(a))
         print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
         image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
-        image = cv.line(image, (0,0), (300,300), color, 2)
+        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
 
     return image
 
