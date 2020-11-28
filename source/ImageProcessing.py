@@ -75,7 +75,7 @@ def addHoughLinesOnImage(image, lines, color):
     image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
 
     for x1,y1,x2,y2 in lines[0]:
-        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
+        cv.line(image, (x1,y1), (x2,y2), color, 2)
 #    for rho, theta in lines[0]:
 #        a = np.cos(theta)
 #        b = np.sin(theta)
