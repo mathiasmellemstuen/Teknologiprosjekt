@@ -29,3 +29,6 @@ def setVelosity():
     turn = [speed * turn, speed * (turn * -1)]
 
     robot.steer(turn[0], turn[1])
+
+while true:
+    setVelosity()
