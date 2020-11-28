@@ -63,24 +63,25 @@ def calculateHoughImage(image):
     return lines
 
 def addHoughLinesOnImage(image, lines, color):
-    return cv.line(image,(0,0),(300,300),(0,0,240),10)
-    if len(lines) == 0: 
-        print("Could not add hough lines. Returning.")
-        return image
-
-    for rho, theta in lines[0]:
-        a = np.cos(theta)
-        b = np.sin(theta)
-        x0 = a * rho
-        y0 = b * rho
-        x1 = int(x0 + 1000*(-b))
-        y1 = int(y0 + 1000*(a))
-        x2 = int(x0 - 1000*(-b))
-        y2 = int(y0 - 1000*(a))
-        print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
-        cv.line(image, (0,0), (300,300), color, 10)
-
+    cv.line(image,(0,0),(300,300),(0,0,240),10)
     return image
+    #if len(lines) == 0: 
+    #    print("Could not add hough lines. Returning.")
+    #    return image
+#
+#    for rho, theta in lines[0]:
+#        a = np.cos(theta)
+#        b = np.sin(theta)
+#        x0 = a * rho
+#        y0 = b * rho
+#        x1 = int(x0 + 1000*(-b))
+#        y1 = int(y0 + 1000*(a))
+#        x2 = int(x0 - 1000*(-b))
+#        y2 = int(y0 - 1000*(a))
+#        print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
+#        cv.line(image, (0,0), (300,300), color, 10)
+#
+#    return image
 
 def process():
     global original, grey, binary, canny, camera, processed
@@ -96,7 +97,8 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        processed = addHoughLinesOnImage(canny, hough, (0,0,255)) # Setting the processed image to hough for now.  
+        houghImage = addHoughLinesOnImage(canny, hough, (0,0,255))
+        processed = houghImage  
         raw_capture.truncate(0)
 
 
