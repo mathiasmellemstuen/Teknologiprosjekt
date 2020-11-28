@@ -56,7 +56,8 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def calculateHoughImage(image): 
-    lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
+#    lines = cv.HoughLines(image,1, np.pi / 180, 150, None, 0, 0)
+    lines = cv.HoughLinesP(image,1,np.pi / 180,100,100,100,10)
     if lines is None: 
         lines = []
 
@@ -71,20 +72,22 @@ def addHoughLinesOnImage(image, lines, color):
     if len(lines) == 0: 
         print("Could not add hough lines. Returning.")
         return image
-    
-    for line in lines: 
-        for rho, theta in line:
-            a = np.cos(theta)
-            b = np.sin(theta)
-            x0 = a * rho
-            y0 = b * rho
-            x1 = int(x0 + 1000*(-b))
-            y1 = int(y0 + 1000*(a))
-            x2 = int(x0 - 1000*(-b))
-            y2 = int(y0 - 1000*(a))
-            print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
-            image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
-            image = cv.line(image, (x1,y1), (x2,y2), color, 2)
+    image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
+
+    for x1,y1,x2,y2 in lines[0]:
+        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
+#    for rho, theta in lines[0]:
+#        a = np.cos(theta)
+#        b = np.sin(theta)
+#        x0 = a * rho
+#        y0 = b * rho
+#        x1 = int(x0 + 1000*(-b))
+#        y1 = int(y0 + 1000*(a))
+#        x2 = int(x0 - 1000*(-b))
+#        y2 = int(y0 - 1000*(a))
+#        print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
+#        image = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
+#        image = cv.line(image, (x1,y1), (x2,y2), color, 2)
 
     return image
 
