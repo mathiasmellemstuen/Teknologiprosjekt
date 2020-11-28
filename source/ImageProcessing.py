@@ -65,6 +65,7 @@ def calculateHoughImage(image):
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0: 
+        print("Could not add hough lines. Returning.")
         return image
 
     for rho, theta in lines[0]:
@@ -76,7 +77,7 @@ def addHoughLinesOnImage(image, lines, color):
         y1 = int(y0 + 1000*(a))
         x2 = int(x0 - 1000*(-b))
         y2 = int(y0 - 1000*(a))
-        #print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
+        print("Creating a line between x1:", x1, ", y1:",y1,", x2:",x2,", y2:",y2)
         image = cv.line(image, (0,0), (800,600), color, 10)
 
     return image
