@@ -41,7 +41,7 @@ def setVelocity():
 def start():    # Function to start the robot
     global thread
 
-    thread = threading.Thread(target = setVelosity)
+    thread = threading.Thread(target = setVelocity)
 
 def stop():   # Function that is called when the script ends
     global speed, rotation, thread
