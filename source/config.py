@@ -2,8 +2,13 @@ import json
 
 FILE = "config.json"
 
-def int_please_object_hook(obj):
+def objectHook(obj):
     rv = {}
+    
+    if obj is None: 
+        print("Error: The value is None. Returning empty dict.")
+        return rv
+
     for k, v in obj.items():
         if isinstance(v, str):
             if "." in v:
@@ -26,5 +31,5 @@ def save(data):
 
 def load(): 
     with open(FILE,"r") as f:
-        return json.load(f, object_hook=int_please_object_hook)
+        return json.load(f, object_hook=objectHook)
 
