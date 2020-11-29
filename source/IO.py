@@ -8,6 +8,7 @@ import config
 
 print("Starting I/O module")
 
+running = True
 config.load() 
 time.sleep(1)
 print("Done: Loading config file:") 
@@ -22,7 +23,7 @@ mc.start()
 time.sleep(2) # Waiting for the initialization of the modules above. 
 print("All modules initialized. Started successfully")
 try:
-    while True:
+    while running:
         #ip.updateCameraValues()
         ui.setOriginalImage(ip.getOriginalImage())
         ui.setGrayImage(ip.getGreyImage())
@@ -30,6 +31,7 @@ try:
         ui.setProcessedImage(ip.getProcessedImage())
 except KeyboardInterrupt:
     print("Starting shutdown.")
+    running = False
     ip.stop()
     ui.stop()
     sr.stop()
