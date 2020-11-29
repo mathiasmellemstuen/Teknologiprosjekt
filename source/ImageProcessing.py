@@ -114,7 +114,6 @@ def start():
 def stop(): 
     global thread, threadRunning
     print("Stopping the image processing thread.")
-    stopImageProcessingThread()
     threadRunning = False
     thread.join()
 

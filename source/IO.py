@@ -13,6 +13,7 @@ time.sleep(1)
 print("Done: Loading config file:") 
 
 #Starting threads
+print("Starting all threads")
 ip.start()
 ui.start()
 sr.start()
@@ -27,8 +28,10 @@ try:
         ui.setGrayImage(ip.getGreyImage())
         ui.setBinaryImage(ip.getBinaryImage())
         ui.setProcessedImage(ip.getProcessedImage())
-except KeyboardInterrupt: 
+except KeyboardInterrupt:
+    print("Starting shutdown.")
     ip.stop()
     ui.stop()
     sr.stop()
     mc.stop()
+    print("Shutdown complete.")
