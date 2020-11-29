@@ -17,6 +17,8 @@ grayImage = None
 binaryImage = None
 processedImage = None
 
+thread = None
+
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
@@ -130,7 +132,13 @@ def setProcessedImage(image):
 def run(): 
     app.run(host='0.0.0.0', debug = False, port=80)
 
-def startUserInterfaceThread(): 
+def start():
+    global thread 
     print("Initializing user interface thread.")
     thread = threading.Thread(target= run)
     thread.start()
+
+def stop():
+    global thread
+    print("Stopping user interface thread.")
+    thread.join()

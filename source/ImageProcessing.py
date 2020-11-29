@@ -105,13 +105,17 @@ def getProcessedImage():
     ret, jpeg = cv.imencode('.jpg', processed)
     return jpeg.tobytes()
 
-def startImageProcessingThread(): 
+def start(): 
     global thread, threadRunning
     threadRunning = True
     thread = threading.Thread(target = process)
     thread.start()
 
-def stopImageProcessingThread(): 
+def stop(): 
     global thread, threadRunning
+    print("Stopping the image processing thread.")
+    stopImageProcessingThread()
     threadRunning = False
     thread.join()
+
+
