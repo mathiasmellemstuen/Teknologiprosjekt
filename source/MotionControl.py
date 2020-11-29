@@ -35,12 +35,7 @@ def setVelocity():
             speed = defaultSpeed
             rotation = defaultTurn 
         
-        print("Speed:",speed)
-        print("Rotation:",rotation)
-        wheelSpeed = [speed - (speed * rotation), speed - (speed * (rotation * -1))]
-        print("Wheel values: ")
-        print(wheelSpeed)
-
+        wheelSpeed = [speed - (speed * rotation), speed - (speed * (rotation * -1))] # Calculating the speed values on each wheel. 
         robot.steer(wheelSpeed[0],wheelSpeed[1])
 
 def start():    # Function to start the robot
