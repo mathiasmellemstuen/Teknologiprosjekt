@@ -9,6 +9,7 @@ speed = 0   # This is the speed of the robot        |Int     | -100 -> 100
 rotation = 0    # This is the turning rate of the robot |Float   | -1 -> 1
 
 thread = None
+threadRunning = True
 
 robot = EasyGoPiGo3()
 
@@ -23,10 +24,10 @@ def getRotation():
     return rotation
 
 def setVelocity():
-    global speed, rotation, robot
+    global speed, rotation, robot, threadRunning
     global defaultSpeed, defaultTurn
     
-    while True:
+    while threadRunning:
         try:
             speed = getSpeed()
             rotation = getRotation()
@@ -39,16 +40,16 @@ def setVelocity():
         robot.steer(wheelSpeed[0],wheelSpeed[1])
 
 def start():    # Function to start the robot
-    global thread
-
+    global thread, threadRunning
+    threadRunning = True
     thread = threading.Thread(target = setVelocity)
     thread.start()
 
 def stop():   # Function that is called when the script ends
-    global speed, rotation, thread
+    global speed, rotation, thread, threadRunning
 
     speed = 0
     rotation = 0
-
+    threadRunning = True
     robot.stop()
     thread.join()
