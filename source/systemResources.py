@@ -5,6 +5,8 @@ import threading
 
 thread = None
 
+threadRunning = False
+
 network = {
     "upload":0,
     "download":0
@@ -23,15 +25,16 @@ def getNetworkUsage():
     return network
 
 def start():
-    global thread 
+    global thread, threadRunning
     print("Initializing system resources thread.")
+    threadRunning = True
     thread = threading.Thread(target= run)
     thread.start()
 
 def run():
-    global network
+    global network, threadRunning
 
-    while True: 
+    while threadRunning: 
         interval = 1
         t0 = time.time()
         upload0 = psutil.net_io_counters().bytes_sent
@@ -47,5 +50,6 @@ def run():
 
 def stop():
     print("Stopping the system resources thread.") 
-    global thread
+    global thread, threadRunning
+    threadRunning = False
     thread.join()
