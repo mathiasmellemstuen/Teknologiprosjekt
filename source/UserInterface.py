@@ -146,4 +146,4 @@ def stop():
     print("Stopping user interface thread.")
     threadRunning = False
     #request.environ.get("werkzeug.server.shutdown")
-    thread.join()
+    #thread.join()

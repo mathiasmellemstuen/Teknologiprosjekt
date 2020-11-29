@@ -24,7 +24,6 @@ time.sleep(2) # Waiting for the initialization of the modules above.
 print("All modules initialized. Started successfully")
 try:
     while running:
-        #ip.updateCameraValues()
         ui.setOriginalImage(ip.getOriginalImage())
         ui.setGrayImage(ip.getGreyImage())
         ui.setBinaryImage(ip.getBinaryImage())
@@ -33,7 +32,8 @@ except KeyboardInterrupt:
     print("Starting shutdown.")
     running = False
     ip.stop()
-    ui.stop()
+#    ui.stop()
     sr.stop()
     mc.stop()
     print("Shutdown complete.")
+    exit()
