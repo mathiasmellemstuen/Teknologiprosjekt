@@ -23,27 +23,30 @@ def getAngle():
 def setVelosity():
     global speed, turn, robot
     global defaultSpeed, defaultTurn
+    
+    while True:
+        try:
+            speed = getSpeed()
+            turn = getTurn()
+        except:
+            print("Did not load speed and turn, stopping for this loop")
+            speed = defaultSpeed
+            turn = defaultTurn 
 
-    try:
-        speed = getSpeed()
-        turn = getTurn()
-    except:
-        print("Did not load speed and turn, stopping for this loop")
-        speed = defaultSpeed
-        turn = defaultTurn 
-
-    turn = [speed * turn, speed * (turn * -1)]
+        turn = [speed * turn, speed * (turn * -1)]
 
 def start():    # Function to start the robot
     global thread
 
     thread = threading.Thread(target = setVelosity)
+    thread.start()
+
 
 def stop():   # Function that is called when the script ends
     global speed, turn, thread
+    
+    robot.stop()
+    thread.join()
 
     speed = 0
     turn = 0
-
-    robot.stop()
-    thread.join()
