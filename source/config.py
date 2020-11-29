@@ -9,7 +9,10 @@ def int_please_object_hook(obj):
             try:
                 rv[k] = int(v)
             except ValueError:
-                rv[k] = v
+                try: 
+                    rv[k] = float(v)
+                except ValueError:
+                    rv[k] = v
         else:
             rv[k] = v
     return rv
