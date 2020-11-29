@@ -37,7 +37,7 @@ def setVelocity():
         
         print("Speed:",speed)
         print("Rotation:",rotation)
-        wheelSpeed = [speed * rotation, speed * (rotation * -1)]
+        wheelSpeed = [speed - (speed * rotation), speed - (speed * (rotation * -1))]
         print("Wheel values: ")
         print(wheelSpeed)
 
