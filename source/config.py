@@ -6,12 +6,15 @@ def int_please_object_hook(obj):
     rv = {}
     for k, v in obj.items():
         if isinstance(v, str):
-            try:
-                rv[k] = int(v)
-            except ValueError:
+            if "." in v:
                 try: 
                     rv[k] = float(v)
-                except ValueError:
+                except ValueError: 
+                    rv[k] = v
+            else:
+                try:
+                    rv[k] = int(v)
+                except ValueError: 
                     rv[k] = v
         else:
             rv[k] = v
