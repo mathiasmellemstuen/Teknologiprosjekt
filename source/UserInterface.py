@@ -137,9 +137,9 @@ def start():
     global thread, threadRunning 
     print("Initializing user interface thread.")
     threadRunning = True
-    thread = threading.Thread(target= run)
-    thread.start()
+    thread = threading.Thread(target= run) 
     thread.setDaemon(True)
+    thread.start()
     
 def stop():
     global thread, threadRunning 
