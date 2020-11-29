@@ -10,7 +10,10 @@ def objectHook(obj):
         return rv
 
     for k, v in obj.items():
-        if isinstance(v, str):
+        if isinstance(v, None):
+            print("Error: The value in the key is None. Changing it to 0")
+            rv[k] = 0
+        elif isinstance(v, str):
             if "." in v:
                 try: 
                     rv[k] = float(v)
