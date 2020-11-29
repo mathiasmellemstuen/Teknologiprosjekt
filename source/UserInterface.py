@@ -18,6 +18,7 @@ binaryImage = None
 processedImage = None
 
 thread = None
+threadRunning = True
 
 @app.route('/')
 def root():
@@ -60,9 +61,9 @@ def configPost():
 # Camera Streaming -------
 ## Original Image -------
 def genOriginalImage():
-    global originalImage
+    global originalImage, threadRunning
 
-    while True:
+    while threadRunning:
         #get camera frame
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield originalImage
@@ -78,9 +79,9 @@ def setOriginalImage(image):
 
 ## Gray image -------
 def genGrayImage():
-    global grayImage
+    global grayImage, threadRunning
 
-    while True:
+    while threadRunning:
         #get camera frame
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield grayImage
@@ -96,9 +97,9 @@ def setGrayImage(image):
 
 ## Binary image -------
 def genBinaryImage():
-    global binaryImage
+    global binaryImage, threadRunning
 
-    while True:
+    while threadRunning:
         #get camera frame
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield binaryImage
@@ -114,9 +115,9 @@ def setBinaryImage(image):
 
 ## Processed image -------
 def genProcessedImage():
-    global processedImage
+    global processedImage, threadRunning
 
-    while True:  
+    while threadRunning:  
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield processedImage
         yield b'\r\n\r\n'
@@ -133,12 +134,15 @@ def run():
     app.run(host='0.0.0.0', debug = False, port=80)
 
 def start():
-    global thread 
+    global thread, threadRunning 
     print("Initializing user interface thread.")
+    threadRunning = True
     thread = threading.Thread(target= run)
     thread.start()
 
 def stop():
-    global thread
+    global thread, threadRunning 
     print("Stopping user interface thread.")
+    threadRunning = False
+    request.environ.get("werkzeug.server.shutdown")
     thread.join()
