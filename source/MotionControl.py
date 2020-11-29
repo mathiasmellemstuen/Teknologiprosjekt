@@ -2,7 +2,7 @@ from easygopigo3 import EasyGoPiGo3
 import config
 import threading
 
-defaltSpeed = 0
+defaultSpeed = 0
 defaultTurn = 0
 
 speed = 0   # This is the speed of the robot        |Int     | -100 -> 100
