@@ -7,11 +7,9 @@ h1 {
     margin-bottom:2px;
 }
 #left-box {
-	width:49%;
 	float:left;
 }
 #right-box {
-	width:50%;
 	float:right;
 }
 #cameraFeeds {
