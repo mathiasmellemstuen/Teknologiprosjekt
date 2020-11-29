@@ -47,7 +47,6 @@ img {
 form {
     width: 100%; 
     border: solid 2px black !important;
-    padding: 10px;
 }
 form label, form input {
     margin-bottom:10px;
