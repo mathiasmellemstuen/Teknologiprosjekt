@@ -7,20 +7,18 @@ h1 {
     margin:0;
 }
 #left-box {
-	width:49%;
+	width:50%;
 	float:left;
 }
 #right-box {
-	width:49%;
+	width:50%;
 	float:right;
 }
 #cameraFeeds {
-    position:relative; 
     display:flex;
     flex-flow: row wrap;
     width:100%;
     float: left;
-    margin: 10px;
     border: solid 2px black !important;
 }
 .feed {
@@ -33,7 +31,6 @@ h1, h2, h3, p {
    color: white;
 }
 #resources {
-	position:relative; 
 	width:50%; 
 	float:left;
 }
@@ -41,18 +38,15 @@ img {
      border: solid 2px black;
  }
  #chartContainer {
-	position:relative; 
     width:400px;
     height:400px;  
 	float:right;	
  }
  #res-container {
     border: solid 2px black !important;
-    position:relative; 
     width:100%; 
  }
 form {
-    position:relative;
     width: 100%; 
     border: solid 2px black !important;
     padding: 10px;

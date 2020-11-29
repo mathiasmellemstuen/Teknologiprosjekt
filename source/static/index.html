@@ -14,6 +14,18 @@
                 <img id="feed-binary" class="feed" alt="Cam 3: Binary" src="/api/video/binary">
                 <img id="feed-processed" class="feed" alt="Cam 4: Processed" src="/api/video/processed">
             </div>
+            <div id="res-container">
+                <div id="resources">
+                    <p id="cpu">CPU Usage: </p>
+                    <p id="cpuTemp">CPU Temp: </p>
+                    <p id="mem">Memory Usage: </p>
+                    <p id="networkUpload">Network Upload: </p>
+                    <p id="networkDownload">Network Download: </p>
+                </div>
+                <div id="chartContainer">
+                    <canvas id="chart1"/>
+                </div>
+            </div> 
         </div>
         <div id="right-box"> 
             <form>
@@ -80,18 +92,6 @@
                 <input type="range" min="-180" max="180" step="1" id="rotation">
                 <input type="number" id="rotationTyped" readonly>
             </form>
-            <div id="res-container">
-                <div id="resources">
-                    <p id="cpu">CPU Usage: </p>
-                    <p id="cpuTemp">CPU Temp: </p>
-                    <p id="mem">Memory Usage: </p>
-                    <p id="networkUpload">Network Upload: </p>
-                    <p id="networkDownload">Network Download: </p>
-                </div>
-                <div id="chartContainer">
-                    <canvas id="chart1"/>
-                </div>
-            </div>
-        </div>
+       </div>
     </body>
 </html>
