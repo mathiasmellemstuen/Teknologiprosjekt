@@ -50,6 +50,6 @@ def stop():   # Function that is called when the script ends
 
     speed = 0
     rotation = 0
-    threadRunning = True
+    threadRunning = False
     robot.stop()
     thread.join()
