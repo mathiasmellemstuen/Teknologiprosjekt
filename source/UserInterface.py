@@ -139,10 +139,11 @@ def start():
     threadRunning = True
     thread = threading.Thread(target= run)
     thread.start()
-
+    thread.setDaemon(True)
+    
 def stop():
     global thread, threadRunning 
     print("Stopping user interface thread.")
     threadRunning = False
-    request.environ.get("werkzeug.server.shutdown")
+    #request.environ.get("werkzeug.server.shutdown")
     thread.join()
