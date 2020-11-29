@@ -22,19 +22,21 @@ def getRotation():
     rotation = config.load()["rotation"]
     return rotation
 
-def setVelosity():
+def setVelocity():
     global speed, rotation, robot
     global defaultSpeed, defaultTurn
+    
+    while True:
+        try:
+            speed = getSpeed()
+            rotation = getRotation()
+        except:
+            print("Did not load speed and turn, stopping for this loop")
+            speed = defaultSpeed
+            rotation = defaultTurn 
 
-    try:
-        speed = getSpeed()
-        rotation = getRotation()
-    except:
-        print("Did not load speed and turn, stopping for this loop")
-        speed = defaultSpeed
-        rotation = defaultTurn 
-
-    rotation = [speed * rotation, speed * (rotation * -1)]
+        wheelSpeed = [speed * rotation, speed * (rotation * -1)]
+        robot.steer(wheelSpeed[0],wheelSpeed[1])
 
 def start():    # Function to start the robot
     global thread
