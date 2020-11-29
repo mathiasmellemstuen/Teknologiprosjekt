@@ -45,7 +45,7 @@ def run():
         network["upload"] = round(upload/1000000, 3)
         network["download"] = round(download/100000, 3)
 
-def stop:
+def stop():
     print("Stopping the system resources thread.") 
     global thread
     thread.join()
