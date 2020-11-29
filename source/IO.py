@@ -32,7 +32,7 @@ except KeyboardInterrupt:
     print("Starting shutdown.")
     running = False
     ip.stop()
-#    ui.stop()
+    ui.stop()
     sr.stop()
     mc.stop()
     print("Shutdown complete.")
