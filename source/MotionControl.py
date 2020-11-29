@@ -54,9 +54,3 @@ def stop():   # Function that is called when the script ends
 
     robot.stop()
     thread.join()
-
-while true:
-    robot.steer(0, 0)
-
-while True:
-    setVelosity()

@@ -7,11 +7,11 @@ h1 {
     margin:0;
 }
 #left-box {
-	width:50%;
+	width:49%;
 	float:left;
 }
 #right-box {
-	width:50%;
+	width:49%;
 	float:right;
 }
 #cameraFeeds {
@@ -42,21 +42,18 @@ img {
  }
  #chartContainer {
 	position:relative; 
-    width:50%; 
+    width:400px;
+    height:400px;  
 	float:right;	
  }
  #res-container {
     border: solid 2px black !important;
-    margin: 10px; 
-    padding: 10px;
     position:relative; 
     width:100%; 
  }
 form {
     position:relative;
-    margin: 10px;
-    margin-bottom: 8px;
-    width: 100% 
+    width: 100%; 
     border: solid 2px black !important;
     padding: 10px;
 }
