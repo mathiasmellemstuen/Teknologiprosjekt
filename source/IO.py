@@ -19,8 +19,7 @@ sr.start()
 mc.start()
 
 time.sleep(2) # Waiting for the initialization of the modules above. 
-print("All modules initialized. Started successfully") 
-
+print("All modules initialized. Started successfully")
 try:
     while True:
         #ip.updateCameraValues()
