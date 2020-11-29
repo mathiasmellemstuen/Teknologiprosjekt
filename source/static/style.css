@@ -38,18 +38,20 @@ img {
      border: solid 2px black;
  }
  #chartContainer {
-    width:400px;
-    height:400px;  
+    width:350px;
+    height:350px;  
 	float:right;	
  }
  #res-container {
-    border: solid 2px black !important;
     width:100%; 
  }
 form {
     width: 100%; 
     border: solid 2px black !important;
     padding: 10px;
+}
+form label, form input {
+    margin-bottom:10px;
 }
 form label {
     display: inline-block;
