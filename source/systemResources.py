@@ -3,6 +3,8 @@ import time
 import os
 import threading
 
+thread = None
+
 network = {
     "upload":0,
     "download":0
@@ -20,7 +22,8 @@ def getTemperature():
 def getNetworkUsage(): 
     return network
 
-def startSystemResourcesThread():
+def start():
+    global thread 
     print("Initializing system resources thread.")
     thread = threading.Thread(target= run)
     thread.start()
@@ -40,4 +43,9 @@ def run():
         upload = (upload1 - upload0) / (t1 - t0)
         download = (download1 - download0) / (t1 - t0)
         network["upload"] = round(upload/1000000, 3)
-        network["download"] = round(download/1000000, 3)
+        network["download"] = round(download/100000, 3)
+
+def stop:
+    print("Stopping the system resources thread.") 
+    global thread
+    thread.join()
