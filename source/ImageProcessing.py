@@ -86,14 +86,18 @@ def calculateNodes(houghLines, width, height):
                 pass
             else:
                 # Horizontal search
-                usedElements = []
+                usedIndexes = [] 
                 for y in range(y1,y2,step):
                     for line2 in houghLines:
-                        if line2 is not line and (line2 not in usedElements): 
-                            for a1,b1,a2,b2 in line2: 
-                                if y >= b1 and y <= b2: 
-                                    nodes.append({"x":(x2-x1)+x1,"y":y}) 
-                                    usedElements.append(line2)
+                        if line2 is not line:
+                            for i in usedIndexes: 
+                                if i is not np.where(houghLines == line2):
+                                    for a1,b1,a2,b2 in line2: 
+                                        if y >= b1 and y <= b2: 
+                                            nodes.append({"x":(x2-x1)+x1,"y":y})
+                                            usedIndexes.append(np.where(houghLines == line2))
+                                            
+
     return nodes
 
 def addHoughLinesOnImage(image, lines, color):
