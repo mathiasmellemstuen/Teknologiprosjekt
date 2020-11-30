@@ -109,13 +109,13 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
-        print(nodes)
-        for node in nodes: 
-            if node is None: 
-                continue
+        if nodes is not None: 
+            for node in nodes: 
+                if node is None: 
+                    continue
 
-            processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
-        raw_capture.truncate(0)
+                processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
+            raw_capture.truncate(0)
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)
