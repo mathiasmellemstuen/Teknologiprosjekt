@@ -80,7 +80,18 @@
                 <label>Houghlines: Red line pixel-width (Only for visual rep.)</label>
                 <input type="range" min="1" max="10" step="1" id="houghlinesRedLinePixels">
                 <input type="number" id="houghlinesRedLinePixelsTyped" readonly>
+                
+                <label>Step</label>
+                <input type="range" min="1" max="100" step="10" id="step">
+                <input type="number" id="stepTyped" readonly>
 
+                <label>Cross direction</label>
+                <select id="crossDirection">
+                    <option value="forward">Forward</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value"random">Random</option>
+                </select>
 
                 <h3>Motion Control</h3>
 
