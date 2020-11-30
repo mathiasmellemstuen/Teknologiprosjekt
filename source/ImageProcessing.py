@@ -77,10 +77,7 @@ def calculateNodes(houghLines, width, height):
                     if line is not line2:     
                         for x11,y11,x12,y12 in line:
                             for x21,y21,x22,y22 in line2:
-                                if currentX >= x11 and currentX >= x21 and currentX <= x12 and currentX <= x22:
-                                    nodeX = (((x22-x21) + x21 - ((x12 - x11) + x11)) / 2) + x11
-                                    nodes.append({"x":nodeX,"y":currentY})
-                                    
+                                    nodes.append((x21+x11) / 2,currentY)
                     
 def addHoughLinesOnImage(image, lines, color):
 
