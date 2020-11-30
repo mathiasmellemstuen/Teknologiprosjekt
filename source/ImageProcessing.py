@@ -65,16 +65,23 @@ def calculateHoughImage(image):
 
     return lines
 
-def findMiddleOfTheRoad(houghLines): 
+def calculateNodes(houghLines, width, height): 
     global crossDirection, step
-    
+    nodes = []
     crossDirection = config.load()["crossDirection"]
     step = config.load()["step"]
-    
-    for line in houghLines:
-        for x1,y1,x2,y2 in line: 
-            print("x1:",x1,"y1:",y1,"x2:",x2,"y2:",y2)
-
+    for currentY in range(0,height,step):
+        for currentX in range(0,width,step): 
+            for line in houghLines:
+                for line2 in houghLines: 
+                    if line is not line2:     
+                        for x11,y11,x12,y12 in line:
+                            for x21,y21,x22,y22 in line2:
+                                if currentX >= x11 and currentX >= x21 and currentX <= x12 and currentX <= x22:
+                                    nodeX = (((x22-x21) + x21 - ((x12 - x11) + x11)) / 2) + x11
+                                    nodes.push({"x":nodeX,"y":currentY})
+                                    
+                    
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
@@ -102,7 +109,8 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        findMiddleOfTheRoad(hough)        
+        nodes = calculateNodes(hough)
+        print(nodes)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
         raw_capture.truncate(0)
 
