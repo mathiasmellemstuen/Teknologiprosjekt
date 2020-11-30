@@ -69,8 +69,11 @@ def findMiddleOfTheRoad(houghLines):
     global crossDirection, step
     
     crossDirection = config.load()["crossDirection"]
-    step = config.load()["step"]    
-    print(houghLines)
+    step = config.load()["step"]
+    
+    for line in houghLines:
+        for x1,y1,x2,y2 in line: 
+            print("x1:",x1,"y1:",y1,"x2:",x2,"y2:",y2)
 
 def addHoughLinesOnImage(image, lines, color):
 
