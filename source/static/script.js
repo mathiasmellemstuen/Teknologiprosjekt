@@ -10,14 +10,14 @@ function formToJson(form) {
         key = form[i].id;
         val = form[i].value;
 
-        form[i + 1].value = form[i].value;
-
         json += '"' + key + '":"' + val + '"';
         json += i != form.length - 2 ? "," : "}";
 
-        if (form[i].nodeName == "SELECT") {}
+        if (form[i].nodeName == "SELECT") {
             i++;
-        }    
+        } else {
+            form[i + 1].value = form[i].value;
+        }
     }
 
     return JSON.stringify(JSON.parse(json));
