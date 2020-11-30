@@ -114,7 +114,7 @@ def process():
             if node is None: 
                 continue
 
-        processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
+            processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
         raw_capture.truncate(0)
 
 def getOriginalImage():
