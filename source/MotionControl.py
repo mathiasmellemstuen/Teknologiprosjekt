@@ -111,6 +111,7 @@ def getConstantsFromConfig():
 
 def getVoltage():
     global robot
+    print("----", robot.getVoltage())
     return robot.getVoltage()
 
 def getSpeed():
