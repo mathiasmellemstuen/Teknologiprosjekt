@@ -1,6 +1,6 @@
 window.onload = startup
 var intervalTime = 1000; //Ms 
-var cpuElement, cpuTempElement,memoryElement, networkUploadElement, networkDownloadElement; 
+var cpuElement, cpuTempElement,memoryElement, networkUploadElement, networkDownloadElement, batteryElement;
 var chart1; 
 
 function formToJson(form) {
@@ -72,6 +72,8 @@ function startup() {
     memoryElement = document.getElementById("mem");
     networkUploadElement = document.getElementById("networkUpload");
     networkDownloadElement = document.getElementById("networkDownload"); 
+    batteryElement = document.getElementById("battery")
+
     chart1 = document.getElementById("chart1"); 
 
     form = document.getElementsByTagName("form")[0];
@@ -133,6 +135,7 @@ function startup() {
             memoryElement.innerHTML = "Memory Usage: " + data.ram + "%";
             networkUploadElement.innerHTML = "Network Upload: " + data.net.upload + "Mb/s";
             networkDownloadElement.innerHTML = "Network Download: " + data.net.download + "Mb/s";
+            batteryElement.innerHTML = "Battery: " + data.battery + "%";
 
             if(chart.data.datasets[0].data.length < 10) {
                 chart.data.datasets[0].data.push(parseInt(data.cpu))
