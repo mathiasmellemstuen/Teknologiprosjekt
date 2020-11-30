@@ -86,12 +86,15 @@ def calculateNodes(houghLines, width, height):
                 pass
             else:
                 # Horizontal search
+                linesCopy = houghLines.copy()
+
                 for y in range(y1,y2,step):
-                    for line2 in houghLines:
+                    for line2 in linesCopy:
                         if line2 is not line: 
                             for a1,b1,a2,b2 in line2: 
                                 if y >= b1 and y <= b2: 
                                     nodes.append({"x":(x2-x1)+x1,"y":y}) 
+                                    linesCopy.remove(line2)
                 pass
     return nodes
 
