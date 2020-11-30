@@ -1,35 +1,84 @@
 from easygopigo3 import EasyGoPiGo3
 import config
 import threading
+import math
 
 defaultSpeed = 0
 defaultTurn = 0
 
-speed = 0   # This is the speed of the robot        |Int     | -100 -> 100
+speed = 0       # This is the speed of the robot        |Int     | -100 -> 100
 rotation = 0    # This is the turning rate of the robot |Float   | -1 -> 1
 
 # Contants for motion control
-contant = {
-"Max speed": 100,
-"Min speed": 0
+constants = {
+    "maxSpeed": 100,
+    "minSpeed": 0,
+    "distanceToSlowdown": 10,
+    "errorMargin": 5
 }
 
 target = None
+#{
+#        "nodes": [
+#            {
+#                "x":0,
+#                "y":0
+#            }
+#        ]
+#        "width":500,
+#        "height":500
+#}
 
 thread = None
 threadRunning = True
 
 robot = EasyGoPiGo3()
 
-# Set
+# calculations
+def calcAngle(nextNode):
+    theta = math.atan(nextNode[1] / nextNode[0])
+
+    return math.sin(theta)
+
+def calcSpeed(nextNode):
+    global constants
+
+    speed = int(constants["maxSpeed"])
+    minSpeed = int(constants["minSpeed"])
+    distanceToSlowdown = int(constants["distanceToSlowdown"])
+
+    length = math.sqrt(math.pow(nextNode[0], 2), math.pow(nextNode[1], 2))
+
+    if length > distanceToSlowdown:
+        speed = int(constants["maxSpeed"])
+    elif length < distanceToSlowdown:
+        distLeft = distanceToSlowdown - length
+        speed = speed / distLeft
+
+    speed = speed if speed <= minSpeed else minSpeed
+    return speed
+
+# Set 
 def setTarget(newTarget):
     global target
     target = newTarget
-    pass
+
+def setSpeed():
+    global target, constants
+    speed = constants["maxSpeed"]
+    node = getNode(target)
+
+
+    
+
+
+    
+
 
 def setVelocity():
     global speed, rotation, robot, threadRunning
     global defaultSpeed, defaultTurn
+    global target, constants
     
     while threadRunning:
         try:
@@ -44,7 +93,19 @@ def setVelocity():
         robot.steer(wheelSpeed[0],wheelSpeed[1])
 
 
-# Get
+# Get 
+def getNode():
+    global target, constants
+
+    nextNode = [int(target["nodes"][i]["x"]), int(target["nodes"][i]["y"])]
+
+    i = 0
+    while nextNode[i] and nextNode[i] >= int(constants["errorMargin"]):
+        i += 1
+        nextNode = [int(target["nodes"][i]["x"]), int(target["nodes"][i]["y"])]
+
+    return nextNode
+
 def getConstantsFromConfig():
     pass
 
