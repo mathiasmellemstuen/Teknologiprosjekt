@@ -110,7 +110,6 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
-        print(nodes)  
         if nodes is not None: 
             for node in nodes: 
                 if node is None: 
