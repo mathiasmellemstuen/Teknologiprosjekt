@@ -31,9 +31,9 @@ def getBatteryUsage():
     
     try:
         currentV = motion.getVoltage()
-        return str(rount((maxBatteryV - currentV), 2))
+        return str(round((maxBatteryV - currentV), 2))
     except:
-        return "66"
+        return "None"
 
 def start():
     global thread, threadRunning
