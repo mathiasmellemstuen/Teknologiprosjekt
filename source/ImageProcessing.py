@@ -70,14 +70,7 @@ def calculateNodes(houghLines, width, height):
     nodes = []
     crossDirection = config.load()["crossDirection"]
     step = config.load()["step"]
-    for currentY in range(0,height,step):
-        for currentX in range(0,width,step): 
-            for line in houghLines:
-                for line2 in houghLines: 
-                    if line is not line2:     
-                        for x11,y11,x12,y12 in line:
-                            for x21,y21,x22,y22 in line2:
-                                nodes.append({"x":int((x21+x11) / 2),"y":int(currentY)})
+    print(len(houghLines)) 
     return nodes
 
 def addHoughLinesOnImage(image, lines, color):
