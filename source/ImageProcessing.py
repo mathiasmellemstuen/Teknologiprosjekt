@@ -129,7 +129,7 @@ def process():
             for node in nodes: 
                 if node is None: 
                     continue
-
+                print(node)
                 processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
             raw_capture.truncate(0)
 
