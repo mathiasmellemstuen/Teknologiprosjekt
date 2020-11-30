@@ -109,7 +109,8 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
-        nodes = calculateNodes(hough)
+        width, height = camera.resolution
+        nodes = calculateNodes(hough, width, height)
         print(nodes)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
         raw_capture.truncate(0)
