@@ -8,6 +8,7 @@ import picamera
 from picamera.array import PiRGBArray
 import config
 import json
+import math
 
 threadRunning = False
 thread = None
@@ -65,12 +66,19 @@ def calculateHoughImage(image):
 
     return lines
 
+def calculateLineAngle(x1,y1,x2,y2):
+    hyp = math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
+    hos = math.sqrt(math.pow(x2-x1,2) + math.pow(y1,2))
+    return math.acos(hos / hyp)
+
 def calculateNodes(houghLines, width, height): 
     global crossDirection, step
     nodes = []
     crossDirection = config.load()["crossDirection"]
     step = config.load()["step"]
-    print(len(houghLines)) 
+    for line in houghLines: 
+        for x1,y1,x2,y2 in line: 
+            print(calculateLineAngle(x1,y1,x2,y2))
     return nodes
 
 def addHoughLinesOnImage(image, lines, color):
