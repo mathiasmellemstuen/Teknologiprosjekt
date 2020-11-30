@@ -78,7 +78,8 @@ def calculateNodes(houghLines, width, height):
                         for x11,y11,x12,y12 in line:
                             for x21,y21,x22,y22 in line2:
                                 nodes.append({"x":(x21+x11) / 2,"y":currentY})
- 
+    return nodes
+
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
@@ -109,6 +110,7 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
+        print(nodes)  
         if nodes is not None: 
             for node in nodes: 
                 if node is None: 
