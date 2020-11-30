@@ -134,8 +134,12 @@ def stop():
     thread.join()
 
 #{
-#        "nextNodeX": 0,
-#        "nextNodeY":0,
+#        "nodes": [
+#            {
+#                "x":0,
+#                "y":0
+#            }
+#        ]
 #        "width":500,
 #        "height":500
 #}
