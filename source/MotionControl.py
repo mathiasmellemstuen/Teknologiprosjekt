@@ -36,7 +36,7 @@ def setVelocity():
             speed = getSpeed()
             rotation = getRotation()
         except:
-            print("Did not load speed and turn, stopping for this loop")
+            #print("Did not load speed and turn, stopping for this loop")
             speed = defaultSpeed
             rotation = defaultTurn 
         
