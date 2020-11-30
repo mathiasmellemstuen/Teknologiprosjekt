@@ -94,7 +94,7 @@ def calculateNodes(houghLines, width, height):
                             for a1,b1,a2,b2 in line2: 
                                 if y >= b1 and y <= b2: 
                                     nodes.append({"x":(x2-x1)+x1,"y":y}) 
-                                    linesCopy.remove(line2)
+                                    linesCopy = np.delete(linesCopy,line2)
                 pass
     return nodes
 
