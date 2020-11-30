@@ -14,6 +14,10 @@ function formToJson(form) {
 
         json += '"' + key + '":"' + val + '"';
         json += i != form.length - 2 ? "," : "}";
+
+        if (form[i].nodeName == "SELECT") {}
+            i++;
+        }    
     }
 
     return JSON.stringify(JSON.parse(json));
