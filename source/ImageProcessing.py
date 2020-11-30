@@ -77,8 +77,8 @@ def calculateNodes(houghLines, width, height):
                     if line is not line2:     
                         for x11,y11,x12,y12 in line:
                             for x21,y21,x22,y22 in line2:
-                                    nodes.append({"x":(x21+x11) / 2,"y":currentY})
-                    
+                                nodes.append({"x":(x21+x11) / 2,"y":currentY})
+ 
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
@@ -107,9 +107,14 @@ def process():
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
         width, height = camera.resolution
-        nodes = calculateNodes(hough, width, height)
-        print(nodes)
+        nodes = calculateNodes(hough, width, height) 
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
+        print(nodes)
+        for node in nodes: 
+            if node is None: 
+                continue
+
+        processed = cv.circle(processed,(node["x"],node["y"]),10,(255,0,0))
         raw_capture.truncate(0)
 
 def getOriginalImage():
