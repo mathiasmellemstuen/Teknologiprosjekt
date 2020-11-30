@@ -1,1 +1,1 @@
-{"framerate": "23", "resolutionWidth": "690", "speed": "0", "rotation": "0", "contrast": "99", "resolutionHeight": "540"}
+{"houghlinesTheta": "3.14", "houghlinesRedLinePixels": "6", "houghlinesRho": "0", "contrast": "128", "cannyTreshold2": "501", "framerate": "30", "houghlinesTreshold": "250", "cannyTreshold1": "501", "resolutionHeight": "500", "speed": "0", "resolutionWidth": "500", "houghlinesMaxLineGap": "501", "houghlinesMinLineLength": "501", "rotation": "0"}
