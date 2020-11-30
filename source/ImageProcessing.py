@@ -18,6 +18,9 @@ canny = None
 processed = None
 
 contrast = 128
+crossDirection = "forward" # forward|left|right|random
+step = 10
+
 def updateCameraValues():
     global camera
 
@@ -62,6 +65,15 @@ def calculateHoughImage(image):
 
     return lines
 
+def findMiddleOfTheRoad(houghLines): 
+    global crossDirection, step
+    
+    crossDirection = config.load()["crossDirection"]
+    step = config.load()["step"]
+    
+    print(houghLines)
+
+
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
@@ -89,6 +101,7 @@ def process():
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
+        findMiddleOfTheRoad(hough)        
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
         raw_capture.truncate(0)
 
@@ -120,4 +133,9 @@ def stop():
     threadRunning = False
     thread.join()
 
-
+#{
+#        "nextNodeX": 0,
+#        "nextNodeY":0,
+#        "width":500,
+#        "height":500
+#}
