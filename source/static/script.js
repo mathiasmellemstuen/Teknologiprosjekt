@@ -29,7 +29,9 @@ function jsonToForm(json, form) {
     console.log(obj);
     for (const [key, value] of Object.entries(obj)) {
         form.elements.namedItem(key).value = value;
-        form.elements.namedItem(key + "Typed").value = value;
+
+        if (form.elements.namedItem(key).nodeName != "SELECT")
+            form.elements.namedItem(key + "Typed").value = value;
 
         console.log("Change " + key + " to " + value);
     }
