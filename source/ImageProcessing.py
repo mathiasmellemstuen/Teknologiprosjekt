@@ -68,7 +68,7 @@ def calculateHoughImage(image):
 
 def calculateLineAngle(x1,y1,x2,y2):
     hyp = math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
-    hos = math.sqrt(math.pow(x2-x1,2) + math.pow(y1,2))
+    hos = y2 - y1 
     return math.acos(hos / hyp)
 
 def calculateNodes(houghLines, width, height): 
