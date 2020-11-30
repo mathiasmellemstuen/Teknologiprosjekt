@@ -42,7 +42,8 @@ def resourcesGet():
         "cpu": sysres.getCpuUsage(),
         "ram": sysres.getMemoryUsage(),
         "temp": sysres.getTemperature(),
-        "net": sysres.getNetworkUsage()
+        "net": sysres.getNetworkUsage(),
+        "battery": sysres.getBatteryUsage()
     }
     return jsonify(data)
 

@@ -2,6 +2,7 @@ import psutil
 import time
 import os
 import threading
+import MotionControl as motion
 
 thread = None
 
@@ -23,6 +24,16 @@ def getTemperature():
 
 def getNetworkUsage(): 
     return network
+
+def getBatteryUsage():
+    maxBatteryV = 12.6
+    minBatteryV = 9
+    
+    try:
+        currentV = motion.getVoltage()
+        return (maxBatteryV - currentV) - minBatteryV
+    except:
+        return 0
 
 def start():
     global thread, threadRunning
