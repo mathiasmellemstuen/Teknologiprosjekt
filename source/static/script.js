@@ -131,7 +131,7 @@ function startup() {    // Everything that is going to be done at startup
 
     // Updates values from the server (using the api) on a sett interval
     setInterval(() => {
-        receiveJSON("/api/resources", (data) => {
+        receiveJSON("/api/resources", data => {
             cpuElement.innerHTML = "CPU Usage: " + data.cpu + "%"; 
             cpuTempElement.innerHTML = "CPU Temp: " + data.temp + "C";
             memoryElement.innerHTML = "Memory Usage: " + data.ram + "%";
