@@ -59,6 +59,9 @@ def convertImageToBinary(image):
 def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
+def addDilationToImage(image): 
+    return cv.dilate(image,np.ones((5,5),np.uint8))
+
 def calculateHoughImage(image): 
     c = config.load()
     lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],maxLineGap=c["houghlinesMaxLineGap"])
@@ -144,7 +147,8 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
-        
+        canny = addDilationToImage(canny)
+
         #Adding houghlines
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
