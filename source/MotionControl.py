@@ -14,7 +14,8 @@ constants = {
     "maxSpeed": 100,
     "minSpeed": 0,
     "distanceToSlowdown": 10,
-    "errorMargin": 5
+    "errorMarginNodeInside": 5,
+    "errorMarginNodeCleaning": 5
 }
 
 target = None
@@ -105,6 +106,30 @@ def getNode():
         nextNode = [int(target["nodes"][i]["x"]), int(target["nodes"][i]["y"])]
 
     return nextNode
+
+def cleanNodes(nodes):
+    global constants
+
+    currentNode = {}
+
+    i = 0
+    while i < len(nodes):
+        currentNode = nodes[i]
+        
+        while index < len(nodes):
+            if index <= i:
+                continue
+            elif index = range(len(nodes)):
+                continue
+            elif:
+                a1 = (int(nodes[index]["y"]) - int(currentNode["y"])) / (int(nodes[index]["x"]) - int(currentNode["x"]))
+                a2 = (int(nodes[index + 1]["y"]) - int(nodes[index]["y"])) / (int(nodes[index + 1]["x"]) - int(nodes[index]["x"]))
+
+                if a1 - a2 < int(constants["errorMarginNodeCleaning"]):
+                    del nodes[index]
+
+    return nodes
+        
 
 def getConstantsFromConfig():
     pass
