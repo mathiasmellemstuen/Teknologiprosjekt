@@ -119,7 +119,7 @@ def cleanNodes(nodes):
         while index < len(nodes):
             if index <= i:
                 continue
-            elif index = range(len(nodes)):
+            elif index = len(nodes):
                 continue
             elif:
                 a1 = (int(nodes[index]["y"]) - int(currentNode["y"])) / (int(nodes[index]["x"]) - int(currentNode["x"]))
