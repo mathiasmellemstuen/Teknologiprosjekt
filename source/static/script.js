@@ -82,7 +82,7 @@ function startup() {    // Everything that is going to be done at startup
     });
 
     // Set the form to update the json on the server on every change
-    form.onchange = function() {
+    form.onchange = () => {
         console.log("Form change");
         sendJson(formToJson(form), "/api/config");
     }
@@ -130,8 +130,8 @@ function startup() {    // Everything that is going to be done at startup
     });
 
     // Updates values from the server (using the api) on a sett interval
-    setInterval(function() {
-        receiveJSON("/api/resources", function(data) {
+    setInterval(() => {
+        receiveJSON("/api/resources", (data) => {
             cpuElement.innerHTML = "CPU Usage: " + data.cpu + "%"; 
             cpuTempElement.innerHTML = "CPU Temp: " + data.temp + "C";
             memoryElement.innerHTML = "Memory Usage: " + data.ram + "%";
