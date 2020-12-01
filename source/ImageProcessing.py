@@ -90,8 +90,14 @@ def calculateNodes(houghLines, width, height):
                     for line2 in houghLines:
                         if line2 is not line:
                             for a1,b1,a2,b2 in line2: 
-                                if y >= b1 and y <= b2: 
-                                    nodes.append({"x":(x2-x1)+x1,"y":y})
+                                if y >= b1 and y <= b2:
+                                    x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
+                                    a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
+                                    xPos = (x * a) / 2.0
+                                    element = {"x":xPos, "y": y}
+
+                                    if element not in nodes:
+                                        nodes.append(element,"y":y})
                                     
 
     return nodes
