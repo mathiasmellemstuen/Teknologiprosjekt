@@ -93,6 +93,7 @@ def calculateNodes(houghLines, width, height):
                                 if y >= b1 and y <= b2:
                                     x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
                                     a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
+                                    print("x:",x,"a:",a)  
                                     xPos = (x * a) / 2.0
                                     element = {"x":xPos, "y": y}
 
@@ -107,7 +108,6 @@ def addNodesOnImage(image, nodes, color):
         for node in nodes: 
             if node is None: 
                 continue
-            print(node)
             image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
     return image
 
