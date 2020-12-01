@@ -97,7 +97,7 @@ def calculateNodes(houghLines, width, height):
                                     element = {"x":xPos, "y": y}
 
                                     if element not in nodes:
-                                        nodes.append(element,"y":y})
+                                        nodes.append(element)
                                     
 
     return nodes
