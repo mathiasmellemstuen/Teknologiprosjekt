@@ -85,8 +85,8 @@ def calculateNodes(houghLines, width, height):
 
     for line in houghLines: 
         for x1,y1,x2,y2 in line: 
-            lineAngle = calculateLineAngle(x1,y1,x2,y2)
-            print(lineAngle) 
+            lineAngle = abs(calculateLineAngle(x1,y1,x2,y2))
+            #print(lineAngle) 
             if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
                 # Vertical search
                 #print("Inside angles.")
