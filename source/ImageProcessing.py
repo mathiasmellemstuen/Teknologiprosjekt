@@ -57,7 +57,8 @@ def convertImageToBinary(image):
     return cv.threshold(image, contrast, 255, cv.THRESH_BINARY)[1]
 
 def convertImageToCanny(image):
-    return cv.Canny(image,50,150)
+    c = config()
+    return cv.Canny(image,c["cannyThreshold1"],c["cannyTreshold2"])
 
 def addDilationToImage(image): 
     return cv.dilate(image,np.ones((1,1),np.uint8))
