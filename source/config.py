@@ -34,6 +34,8 @@ def save(data):
         json.dump(data, f)
 
 def load():
+    global lastConfig
+
     try:
         with open(FILE,"r") as f: 
             c = json.load(f, object_hook=objectHook)
