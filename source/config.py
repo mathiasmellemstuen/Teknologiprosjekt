@@ -1,6 +1,7 @@
 import json
 
 FILE = "config.json"
+lastConfig = None
 
 def objectHook(obj):
     rv = {}
@@ -32,7 +33,13 @@ def save(data):
     with open(FILE,"w") as f:
         json.dump(data, f)
 
-def load(): 
-    with open(FILE,"r") as f:
-        return json.load(f, object_hook=objectHook)
+def load():
+    global lastConfig
 
+    try:
+        with open(FILE,"r") as f: 
+            c = json.load(f, object_hook=objectHook)
+            lastConfig = c
+            return c
+    except: 
+        return lastConfig

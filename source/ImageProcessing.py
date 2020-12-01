@@ -57,7 +57,11 @@ def convertImageToBinary(image):
     return cv.threshold(image, contrast, 255, cv.THRESH_BINARY)[1]
 
 def convertImageToCanny(image):
-    return cv.Canny(image,50,150)
+    c = config.load()
+    return cv.Canny(image,c["cannyTreshold1"],c["cannyTreshold2"])
+
+def addDilationToImage(image): 
+    return cv.dilate(image,np.ones((2,2),np.uint8))
 
 def calculateHoughImage(image): 
     c = config.load()
@@ -125,7 +129,7 @@ def addHoughLinesOnImage(image, lines, color):
     image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
     for line in lines:
         for x1,y1,x2,y2 in line:
-            cv.line(image, (x1,y1), (x2,y2), color, 2)
+            cv.line(image, (x1,y1), (x2,y2), color, config.load()["houghlinesRedLinePixels"])
 
     return image
 
@@ -144,7 +148,8 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
-        
+        canny = addDilationToImage(canny)
+
         #Adding houghlines
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
