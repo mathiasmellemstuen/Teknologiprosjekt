@@ -29,18 +29,18 @@ def updateCameraValues():
     camera.framerate = config.load()["framerate"]
 
 #Initializing the pi-camera
-print("Initializing camera.") 
+#print("Initializing camera.") 
 #camera = picamera.PiCamera()
 #updateCameraValues()
-print("Camera initialization done.")
-print("--------------------")
-print("|Camera values:")
-print("|Resolution width:", config.load()["resolutionWidth"])
-print("|Resolution height:", config.load()["resolutionHeight"])
-print("|Framerate:", config.load()["framerate"]) 
-print("|Contrast:", config.load()["contrast"])
-print("--------------------")
-sleep(1)
+#print("Camera initialization done.")
+#print("--------------------")
+#print("|Camera values:")
+#print("|Resolution width:", config.load()["resolutionWidth"])
+#print("|Resolution height:", config.load()["resolutionHeight"])
+#print("|Framerate:", config.load()["framerate"]) 
+#print("|Contrast:", config.load()["contrast"])
+#print("--------------------")
+#sleep(1)
 
 def convertImageToGrayScale(image):
     return cv.cvtColor(image,cv.COLOR_BGR2GRAY)
