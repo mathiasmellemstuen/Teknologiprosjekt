@@ -119,6 +119,7 @@ def addNodesOnImage(image, nodes, color):
             if node is None: 
                 continue
             image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
+    image = cv.putText(image,"Nodes:"+len(nodes),(50,50),cv.FONT_HERSHEY_COMPLEX,1,(255,255,0),3,cv.LINE_AA) 
     return image
 
 def addHoughLinesOnImage(image, lines, color):
@@ -158,7 +159,7 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
         processed = addNodesOnImage(processed,nodes,(0,255,0))
-        
+         
         #Truncating before next loop
         raw_capture.truncate(0)
 
