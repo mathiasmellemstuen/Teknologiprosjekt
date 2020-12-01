@@ -4,8 +4,8 @@ from datetime import datetime
 from time import sleep
 import Benchmarking as benchmarking
 import threading
-import picamera 
-from picamera.array import PiRGBArray
+#import picamera 
+#from picamera.array import PiRGBArray
 import config
 import json
 import math
@@ -30,8 +30,8 @@ def updateCameraValues():
 
 #Initializing the pi-camera
 print("Initializing camera.") 
-camera = picamera.PiCamera()
-updateCameraValues()
+#camera = picamera.PiCamera()
+#updateCameraValues()
 print("Camera initialization done.")
 print("--------------------")
 print("|Camera values:")
@@ -65,6 +65,7 @@ def addDilationToImage(image):
 
 def calculateHoughImage(image): 
     c = config.load()
+    
     lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],maxLineGap=c["houghlinesMaxLineGap"])
     if lines is None: 
         lines = []
@@ -192,6 +193,57 @@ def stop():
     print("Stopping the image processing thread.")
     threadRunning = False
     thread.join()
+
+
+
+originalImage = cv.imread("road.png")
+grey = convertImageToGrayScale(originalImage)
+binary = convertImageToBinary(grey)
+canny = convertImageToCanny(binary)
+
+contours, hierarchy = cv.findContours(binary, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+processed = cv.drawContours(originalImage, contours, -1, (0,255,0),2)
+
+list1 = []
+
+h, w, c = originalImage.shape
+inde = 0
+
+for i in contours:
+    for j in i:
+        list1.append(i[0].tolist()[0])
+ratio =1
+
+def calculateDistanceBetweenTwoPoints(x1,y1,x2,y2):
+    return math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
+
+print(list1)
+print("List 1 length:", len(list1))
+
+#Removing duplicates
+s = []
+for i in list1: 
+    if i not in s: 
+            s.append(i)
+
+list1 = s
+print("List length after deletion:", len(list1))
+for position in list1: 
+    originalImage = cv.circle(originalImage,(position[0],position[1]),5,(0,0,255),-1)
+#for position in contours[0]:
+#    originalImage = cv.circle(originalImage,(position[0][0],position[0][1]),5,(255,0,0),-1)
+#canny = addDilationToImage(canny)
+
+#Adding houghlines
+#hough = calculateHoughImage(canny)
+#processed = addHoughLinesOnImage(canny, hough, (0,0,255))
+
+#Calculating and adding nodes
+#width, height = camera.resolution
+#nodes = calculateNodes(hough, width, height) 
+#processed = addNodesOnImage(processed,nodes,(0,255,0))
+print(cv.imwrite("/mnt/c/Users/Mathias/Desktop/processed.jpg",originalImage))
 
 #{
 #        "nodes": [
