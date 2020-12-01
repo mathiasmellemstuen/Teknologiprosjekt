@@ -82,11 +82,7 @@ def calculateNodes(houghLines, width, height):
             
             if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
                 # Vertical search
-                                   
-                pass
-            else:
-                # Horizontal search
-                for y in range(y1,y2,step):
+                 for y in range(y1,y2,step):
                     for line2 in houghLines:
                         if line2 is not line:
                             for a1,b1,a2,b2 in line2: 
@@ -99,7 +95,10 @@ def calculateNodes(houghLines, width, height):
 
                                     if element not in nodes:
                                         nodes.append(element)
-                                    
+                                   
+            else:
+                # Horizontal search
+                pass                       
 
     return nodes
 
