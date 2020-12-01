@@ -61,7 +61,7 @@ def convertImageToCanny(image):
 
 def calculateHoughImage(image): 
     c = config.load()
-    lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],c["houghlinesMaxLineGap"])
+    lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],maxLineGap=c["houghlinesMaxLineGap"])
     if lines is None: 
         lines = []
 
