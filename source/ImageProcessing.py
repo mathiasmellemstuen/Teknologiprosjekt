@@ -86,7 +86,7 @@ def calculateNodes(houghLines, width, height):
                     for line2 in houghLines:
                         if line2 is not line:
                             for a1,b1,a2,b2 in line2: 
-                                if y >= b1 and y <= b2:
+                                if y >= b1 and y <= b2 and y >= y1 and y <= y2:
                                     x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
                                     a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
                                     xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
