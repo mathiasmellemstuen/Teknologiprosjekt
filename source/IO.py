@@ -5,8 +5,10 @@ import systemResources as sr
 import MotionControl as mc
 import time
 import config
+import subprocess
 
 print("Starting I/O module")
+subprocess.call(["wall", "Robot staring"])
 
 running = True
 config.load() 
@@ -36,4 +38,5 @@ except KeyboardInterrupt:
     sr.stop()
     mc.stop()
     print("Shutdown complete.")
+    subprocess.call(["wall", "Robot shutdown"])
     exit()
