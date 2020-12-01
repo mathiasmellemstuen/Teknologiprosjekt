@@ -76,6 +76,8 @@ def calculateNodes(houghLines, width, height):
     nodes = []
     crossDirection = config.load()["crossDirection"]
     step = config.load()["step"]
+    nodeMargin = config.load()["nodeMargin"]
+
     for line in houghLines: 
         for x1,y1,x2,y2 in line: 
             lineAngle = calculateLineAngle(x1,y1,x2,y2)
@@ -89,6 +91,10 @@ def calculateNodes(houghLines, width, height):
                                 if y >= b1 and y <= b2 and y >= y1 and y <= y2:
                                     x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
                                     a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
+                                    
+                                    if abs(x - a) < nodeMargin:
+                                        continue
+
                                     xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
                                     print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
                                     element = {"x":xPos, "y": y}
