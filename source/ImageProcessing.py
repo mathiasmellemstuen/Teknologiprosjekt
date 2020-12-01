@@ -67,9 +67,9 @@ def calculateHoughImage(image):
     return lines
 
 def calculateLineAngle(x1,y1,x2,y2):
-    hyp = math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
-    hos = y2 - y1 
-    return math.acos(hos / hyp)
+    dx = x2 - x1
+    dy = y2 - y1
+    return math.atan2(dy,dx)
 
 def calculateNodes(houghLines, width, height): 
     global crossDirection, step
@@ -82,25 +82,33 @@ def calculateNodes(houghLines, width, height):
             
             if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
                 # Vertical search
-                                   
-                pass
-            else:
-                # Horizontal search
-                for y in range(y1,y2,step):
+                 for y in range(y1,y2,step):
                     for line2 in houghLines:
                         if line2 is not line:
                             for a1,b1,a2,b2 in line2: 
-                                if y >= b1 and y <= b2:
+                                if y >= b1 and y <= b2 and y >= y1 and y <= y2:
                                     x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
                                     a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
-                                    xPos = (x * a) / 2.0
+                                    xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
+                                    print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
                                     element = {"x":xPos, "y": y}
 
                                     if element not in nodes:
                                         nodes.append(element)
-                                    
+                                   
+            else:
+                # Horizontal search
+                pass                       
 
     return nodes
+
+def addNodesOnImage(image, nodes, color):
+    if nodes is not None: 
+        for node in nodes: 
+            if node is None: 
+                continue
+            image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
+    return image
 
 def addHoughLinesOnImage(image, lines, color):
 
@@ -120,25 +128,27 @@ def process():
     raw_capture = PiRGBArray(camera, size=(config.load()["resolutionWidth"], config.load()["resolutionHeight"]))
 
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
-        
+        #Breaking out of the loop if we want to stop the thread.  
         if threadRunning is False: 
             break
 
+        #Doing greyscaling, binary and canny calculations
         original = frame.array
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
+        
+        #Adding houghlines
         hough = calculateHoughImage(canny)
+        processed = addHoughLinesOnImage(canny, hough, (0,0,255))
+       
+        #Calculating and adding nodes
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
-        processed = addHoughLinesOnImage(canny, hough, (0,0,255))
-        if nodes is not None: 
-            for node in nodes: 
-                if node is None: 
-                    continue
-                print(node)
-                processed = cv.circle(processed,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
-            raw_capture.truncate(0)
+        processed = addNodesOnImage(processed,nodes,(0,255,0))
+        
+        #Truncating before next loop
+        raw_capture.truncate(0)
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)
