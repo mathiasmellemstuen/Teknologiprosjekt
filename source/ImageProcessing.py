@@ -102,6 +102,15 @@ def calculateNodes(houghLines, width, height):
 
     return nodes
 
+def addNodesOnImage(image, nodes, color):
+    if nodes is not None: 
+        for node in nodes: 
+            if node is None: 
+                continue
+            print(node)
+            image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
+    return image
+
 def addHoughLinesOnImage(image, lines, color):
 
     if len(lines) == 0:  
@@ -120,25 +129,27 @@ def process():
     raw_capture = PiRGBArray(camera, size=(config.load()["resolutionWidth"], config.load()["resolutionHeight"]))
 
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
-        
+        #Breaking out of the loop if we want to stop the thread.  
         if threadRunning is False: 
             break
 
+        #Doing greyscaling, binary and canny calculations
         original = frame.array
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
+        
+        #Adding houghlines
         hough = calculateHoughImage(canny)
+        processed = addHoughLinesOnImage(canny, hough, (0,0,255))
+       
+        #Calculating and adding nodes
         width, height = camera.resolution
         nodes = calculateNodes(hough, width, height) 
-        processed = addHoughLinesOnImage(canny, hough, (0,0,255))
-        if nodes is not None: 
-            for node in nodes: 
-                if node is None: 
-                    continue
-                print(node)
-                processed = cv.circle(processed,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
-            raw_capture.truncate(0)
+        processed = addNodesOnImage(processed,nodes,(0,255,0))
+        
+        #Truncating before next loop
+        raw_capture.truncate(0)
 
 def getOriginalImage():
     ret, jpeg = cv.imencode('.jpg', original)
