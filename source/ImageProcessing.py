@@ -61,7 +61,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,c["cannyTreshold1"],c["cannyTreshold2"])
 
 def addDilationToImage(image): 
-    return cv.dilate(image,np.ones((2,2),np.uint8))
+    return cv.dilate(image,np.ones((3,3),np.uint8))
 
 def calculateHoughImage(image): 
     c = config.load()
