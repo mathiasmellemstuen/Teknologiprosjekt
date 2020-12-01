@@ -86,9 +86,10 @@ def calculateNodes(houghLines, width, height):
     for line in houghLines: 
         for x1,y1,x2,y2 in line: 
             lineAngle = calculateLineAngle(x1,y1,x2,y2)
-            
+ 
             if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
                 # Vertical search
+                print("Inside angles.")
                  for y in range(y1,y2,step):
                     for line2 in houghLines:
                         if line2 is not line:
@@ -101,7 +102,7 @@ def calculateNodes(houghLines, width, height):
                                         continue
 
                                     xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
-                                    print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
+                                   # print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
                                     element = {"x":xPos, "y": y}
 
                                     if element not in nodes:
