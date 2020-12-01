@@ -31,7 +31,7 @@ def getBatteryUsage():
     
     try:
         currentV = motion.getVoltage()
-        return str(round( (currentV - minBatteryV) / (maxBatteryV - minBatteryV) ,4) * 100)
+        return str(round( ((currentV - minBatteryV) / (maxBatteryV - minBatteryV)) * 100 ,1))
     except:
         return "None"
 
