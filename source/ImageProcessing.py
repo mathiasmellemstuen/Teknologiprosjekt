@@ -61,7 +61,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,c["cannyTreshold1"],c["cannyTreshold2"])
 
 def addDilationToImage(image): 
-    return cv.dilate(image,np.ones((2,2),np.uint8))
+    return cv.dilate(image,np.ones((3,3),np.uint8))
 
 def calculateHoughImage(image): 
     c = config.load()
@@ -86,10 +86,11 @@ def calculateNodes(houghLines, width, height):
     for line in houghLines: 
         for x1,y1,x2,y2 in line: 
             lineAngle = calculateLineAngle(x1,y1,x2,y2)
-            
+            print(lineAngle) 
             if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
                 # Vertical search
-                 for y in range(y1,y2,step):
+                #print("Inside angles.")
+                for y in range(y1,y2,step):
                     for line2 in houghLines:
                         if line2 is not line:
                             for a1,b1,a2,b2 in line2: 
@@ -101,7 +102,7 @@ def calculateNodes(houghLines, width, height):
                                         continue
 
                                     xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
-                                    print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
+                                   # print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
                                     element = {"x":xPos, "y": y}
 
                                     if element not in nodes:
@@ -119,7 +120,7 @@ def addNodesOnImage(image, nodes, color):
             if node is None: 
                 continue
             image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
-    image = cv.putText(image,"Nodes: "+str(len(nodes)),(10,20),cv.FONT_HERSHEY_COMPLEX,1,(255,0,255),1,cv.LINE_AA) 
+    image = cv.putText(image,"Nodes: "+str(len(nodes)),(10,20),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA) 
     return image
 
 def addHoughLinesOnImage(image, lines, color):
@@ -131,7 +132,7 @@ def addHoughLinesOnImage(image, lines, color):
     for line in lines:
         for x1,y1,x2,y2 in line:
             cv.line(image, (x1,y1), (x2,y2), color, config.load()["houghlinesRedLinePixels"])
-    image = cv.putText(image, "Lines: " + str(len(lines)),(10,60),cv.FONT_HERSHEY_COMPLEX,1,(255,0,255),1,cv.LINE_AA)
+    image = cv.putText(image, "Lines: " + str(len(lines)),(10,60),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA)
     
     return image
 
