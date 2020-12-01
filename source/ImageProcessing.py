@@ -131,7 +131,8 @@ def addHoughLinesOnImage(image, lines, color):
     for line in lines:
         for x1,y1,x2,y2 in line:
             cv.line(image, (x1,y1), (x2,y2), color, config.load()["houghlinesRedLinePixels"])
-
+    image = cv.putText(image, "Lines: " + str(len(lines)),(10,50),cv.FONT_HERSHEY_COMPLEX,1,(255,0,255),1,cv.LINE_AA)
+    
     return image
 
 def process():
