@@ -58,7 +58,7 @@ def convertImageToBinary(image):
 
 def convertImageToCanny(image):
     c = config.load()
-    return cv.Canny(image,c["cannyTreshold1"],c["cannyTreshold2"])
+    return cv.Canny(image,c["cannyTreshold1"],c["cannyTreshold2"], apertureSize=3)
 
 def addDilationToImage(image): 
     return cv.dilate(image,np.ones((3,3),np.uint8))
