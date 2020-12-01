@@ -151,7 +151,7 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
-        canny = addDilationToImage(canny)
+        #canny = addDilationToImage(canny)
 
         #Adding houghlines
         hough = calculateHoughImage(canny)
