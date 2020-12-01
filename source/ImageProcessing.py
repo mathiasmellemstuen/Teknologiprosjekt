@@ -60,7 +60,7 @@ def convertImageToCanny(image):
     return cv.Canny(image,50,150)
 
 def addDilationToImage(image): 
-    return cv.dilate(image,np.ones((5,5),np.uint8))
+    return cv.dilate(image,np.ones((1,1),np.uint8))
 
 def calculateHoughImage(image): 
     c = config.load()
