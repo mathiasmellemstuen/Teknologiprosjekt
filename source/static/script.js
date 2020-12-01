@@ -47,7 +47,7 @@ function receiveJSON(url, onReceived) {     // Function to receive json data for
 
     xhr.open("GET", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");   // Sets the type of received data to json
-    xhr.onreadystatechange = () -> {
+    xhr.onreadystatechange = () => {
         if (xhr.status == 200 && xhr.readyState == 4 && xhr.responseText != "") {
             json = JSON.parse(xhr.responseText);
             onReceived(json); // Using the provided function to handle the json filed received
