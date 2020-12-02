@@ -208,7 +208,6 @@ contours, hierarchy = cv.findContours(binary, cv.RETR_TREE, cv.CHAIN_APPROX_SIMP
 list1 = []
 
 h, w, c = originalImage.shape
-inde = 0
 
 for i in contours:
     for j in i:
@@ -253,8 +252,37 @@ def deleteNearbyNodes(nodes):
 list1 = deleteNearbyNodes(list1)
 print("List length after deletion nr.2:", len(list1))
 
+roadNodeList = []
+step = 20
+for y in range(step,h,step):
+    n = []
+    for node in list1:
+        if node[1] >= y - step and node[1] <= y:
+            n.append(node)
 
+    if len(n) == 0:
+        continue
+    
+    averageX = 0
+    averageY = 0
+    i = 0
+    for node in n: 
+        averageX += node[0]
+        averageY += node[1]
+        i+=1
 
+    averageX = averageX / i
+    averageY = averageY / i
+
+    roadNodeList.append([int(averageX),int(averageY)])
+
+lastNode = None
+for position in roadNodeList: 
+    originalImage = cv.circle(originalImage,(position[0],position[1]),5,(128,0,255),-1)
+    if lastNode != None: 
+        originalImage = cv.line(originalImage,(position[0],position[1]),(lastNode[0],lastNode[1]),(0,0,255),2)
+
+    lastNode = position
 for position in list1: 
     originalImage = cv.circle(originalImage,(position[0],position[1]),5,(0,0,255),-1)
 
