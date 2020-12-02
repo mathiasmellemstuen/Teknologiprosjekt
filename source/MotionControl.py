@@ -129,7 +129,7 @@ def cleanNodes(nodes):
                     del nodes[index]
 
             index += 1
-        i =+ 1
+        i += 1
     return nodes
         
 def getConstantsFromConfig():
