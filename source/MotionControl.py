@@ -115,12 +115,12 @@ def cleanNodes(nodes):
     i = 0
     while i < len(nodes):
         currentNode = nodes[i]
-        
+
+        index = 0
         while index < len(nodes):
-            if index <= i:
+            if index <= i or index == len(nodes):
                 continue
-            elif index == len(nodes):
-                continue
+                index += 1
             else:
                 a1 = (int(nodes[index]["y"]) - int(currentNode["y"])) / (int(nodes[index]["x"]) - int(currentNode["x"]))
                 a2 = (int(nodes[index + 1]["y"]) - int(nodes[index]["y"])) / (int(nodes[index + 1]["x"]) - int(nodes[index]["x"]))
@@ -128,9 +128,10 @@ def cleanNodes(nodes):
                 if a1 - a2 < int(constants["errorMarginNodeCleaning"]):
                     del nodes[index]
 
+            index += 1
+        i =+ 1
     return nodes
         
-
 def getConstantsFromConfig():
     pass
 
