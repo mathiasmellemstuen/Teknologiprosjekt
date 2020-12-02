@@ -203,7 +203,7 @@ canny = convertImageToCanny(binary)
 
 contours, hierarchy = cv.findContours(binary, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
-processed = cv.drawContours(originalImage, contours, -1, (0,255,0),2)
+#processed = cv.drawContours(originalImage, contours, -1, (0,255,0),2)
 
 list1 = []
 
@@ -213,7 +213,8 @@ inde = 0
 for i in contours:
     for j in i:
         list1.append(i[0].tolist()[0])
-ratio =1
+
+ratio = 20
 
 def calculateDistanceBetweenTwoPoints(x1,y1,x2,y2):
     return math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
@@ -229,8 +230,34 @@ for i in list1:
 
 list1 = s
 print("List length after deletion:", len(list1))
+
+def deleteNearbyNodes(nodes): 
+    i = 0
+    while i < len(nodes): 
+
+        j = 0
+        while j < len(nodes):
+            
+            if i <= j or j == len(nodes):
+                j+=1
+                continue
+            
+            distance = calculateDistanceBetweenTwoPoints(nodes[i][0],nodes[i][1],nodes[j][0],nodes[j][1])
+
+            if distance < ratio:
+                del nodes[j]
+            j+=1
+        i+=1
+    return nodes
+
+list1 = deleteNearbyNodes(list1)
+print("List length after deletion nr.2:", len(list1))
+
+
+
 for position in list1: 
     originalImage = cv.circle(originalImage,(position[0],position[1]),5,(0,0,255),-1)
+
 #for position in contours[0]:
 #    originalImage = cv.circle(originalImage,(position[0][0],position[0][1]),5,(255,0,0),-1)
 #canny = addDilationToImage(canny)
@@ -243,7 +270,7 @@ for position in list1:
 #width, height = camera.resolution
 #nodes = calculateNodes(hough, width, height) 
 #processed = addNodesOnImage(processed,nodes,(0,255,0))
-print(cv.imwrite("/mnt/c/Users/Mathias/Desktop/processed.jpg",originalImage))
+print(cv.imwrite("processed.jpg",originalImage))
 
 #{
 #        "nodes": [
