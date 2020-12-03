@@ -213,7 +213,7 @@ for i in contours:
     for j in i:
         list1.append(i[0].tolist()[0])
 
-ratio = 20
+ratio = 30
 
 def calculateDistanceBetweenTwoPoints(x1,y1,x2,y2):
     return math.sqrt(math.pow(x2-x1,2) + math.pow(y2-y1,2))
@@ -233,16 +233,15 @@ print("List length after deletion:", len(list1))
 def deleteNearbyNodes(nodes): 
     i = 0
     while i < len(nodes): 
-
         j = 0
         while j < len(nodes):
             
-            if i <= j or j == len(nodes):
+            if i == j or not i < len(nodes):
                 j+=1
                 continue
-            
+            print(i, "and",len(nodes))
             distance = calculateDistanceBetweenTwoPoints(nodes[i][0],nodes[i][1],nodes[j][0],nodes[j][1])
-
+            
             if distance < ratio:
                 del nodes[j]
             j+=1
@@ -252,37 +251,40 @@ def deleteNearbyNodes(nodes):
 list1 = deleteNearbyNodes(list1)
 print("List length after deletion nr.2:", len(list1))
 
-roadNodeList = []
-step = 20
-for y in range(step,h,step):
-    n = []
-    for node in list1:
-        if node[1] >= y - step and node[1] <= y:
-            n.append(node)
-
-    if len(n) == 0:
-        continue
-    
-    averageX = 0
-    averageY = 0
-    i = 0
-    for node in n: 
-        averageX += node[0]
-        averageY += node[1]
-        i+=1
-
-    averageX = averageX / i
-    averageY = averageY / i
-
-    roadNodeList.append([int(averageX),int(averageY)])
-
-lastNode = None
-for position in roadNodeList: 
-    originalImage = cv.circle(originalImage,(position[0],position[1]),5,(128,0,255),-1)
-    if lastNode != None: 
-        originalImage = cv.line(originalImage,(position[0],position[1]),(lastNode[0],lastNode[1]),(0,0,255),2)
-
-    lastNode = position
+for node in list1: 
+    if node[0] <= w and node[1] <= h:
+        print(originalImage[node[0],node[1]])
+#roadNodeList = []
+#step = 20
+#for y in range(step,h,step):
+#    n = []
+#    for node in list1:
+#        if node[1] >= y - step and node[1] <= y:
+#            n.append(node)
+#
+#    if len(n) == 0:
+#        continue
+#    
+#    averageX = 0
+#    averageY = 0
+#    i = 0
+#    for node in n: 
+#        averageX += node[0]
+#        averageY += node[1]
+#        i+=1
+#
+#    averageX = averageX / i
+#    averageY = averageY / i
+#
+#    roadNodeList.append([int(averageX),int(averageY)])
+#
+#lastNode = None
+#for position in roadNodeList: 
+#    originalImage = cv.circle(originalImage,(position[0],position[1]),5,(128,0,255),-1)
+#    if lastNode != None: 
+#        originalImage = cv.line(originalImage,(position[0],position[1]),(lastNode[0],lastNode[1]),(0,0,255),2)
+#
+#    lastNode = position
 for position in list1: 
     originalImage = cv.circle(originalImage,(position[0],position[1]),5,(0,0,255),-1)
 

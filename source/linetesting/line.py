@@ -10,7 +10,7 @@ def calculateLineRadians(x1,y1,x2,y2):
     return math.atan2(dy,dx)
 
 def convertAngle0To2Pi(a):
-    return a if a >= 0.0 else 2 * math.pi + a
+    return a if a >= 0.0 else (2 * math.pi) + a
 
 def calculateRadiansBetweenTwoNodes(p1,p2):
     radians1 = calculateLineRadians(p2[0],p2[1],p1[0],p1[1])
@@ -23,6 +23,14 @@ def calculateRadiansBetweenTwoNodes(p1,p2):
 def distanceBetweenTwoPoints(p1,p2):
     return ((((p2[0] - p1[0] )**2) + ((p2[1]-p1[1])**2) )**0.5)
 
+
+def ccw(A,B,C):
+    return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+
+def intersect(A,B,C,D):
+    return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
+
+
 def findClosestNode(fromNode): 
     global newLines
 
@@ -33,21 +41,30 @@ def findClosestNode(fromNode):
                 closestNode = node
     return closestNode
 
-def findLine(currentLines, startingNode, validDistance, validAngle):
-
-    line = []
-    line.append(startingNode)
+def findLine(currentLines, validDistance, validAngle):
     
-    for i in range(0,len(currentLines)):
-        currentNode = line[len(line) - 1]
-        currentLineAngle = calculateRadiansBetweenTwoNodes((currentNode[0],currentNode[1]), (currentNode[2], currentNode[3]))
-        closestNode = findClosestNode(currentNode)
-        distanceToClosestNode = distanceBetweenTwoPoints((currentNode[2], currentNode[3]), (closestNode[0], closestNode[1]))
-        angleToClosestNode = calculateRadiansBetweenTwoNodes((currentNode[2], currentNode[3]),(closestNode[0],closestNode[1]))
-        print("Distance to closest node:", distanceToClosestNode)
-        print("Angle to closest node:", angleToClosestNode)
-        if distanceToClosestNode > validDistance or angleToClosestNode > validAngle:
-            return line
+    #currentLines.remove(startingNode)
+    line = []
+    line.append(currentLines[0])
+    
+    lastNode = line[len(line) - 1]
+    
+    for i in range(1,len(currentLines) - 1):
+         
+        currentNode = currentLines[i]
+        lastNodeAngle = calculateLineRadians(lastNode[0],lastNode[1],lastNode[2],lastNode[3])
+        currentNodeAngle = calculateLineRadians(currentNode[0],currentNode[1],currentNode[2],currentNode[3])
+        
+        lastNodeAngle = convertAngle0To2Pi(lastNodeAngle)
+        currentNodeAngle = convertAngle0To2Pi(currentNodeAngle)
+
+        distance1 = distanceBetweenTwoPoints((lastNode[0],lastNode[1]),(currentNode[0],currentNode[1]))
+
+        distance2 = distanceBetweenTwoPoints((lastNode[0],lastNode[1]),(currentNode[2],currentNode[3]))
+        print(intersect((lastNode[0],lastNode[1]),(lastNode[2],lastNode[3]),(currentNode[0],currentNode[1]),(currentNode[2],currentNode[3]))) 
+        if abs(lastNodeAngle - currentNodeAngle) < validAngle and intersect((lastNode[0],lastNode[1]),(lastNode[2],lastNode[3]),(currentNode[0],currentNode[1]),(currentNode[2],currentNode[3])):
+            line.append(currentNode)  
+            lastNode = currentNode
 
     return line
 
@@ -119,28 +136,22 @@ threshold = 20
 min_line_length = 10
 max_line_gap = 50
 line_image = np.copy(img) * 0
-lines = cv2.HoughLinesP(edge, rho, theta, threshold, np.array([]),min_line_length, max_line_gap)
+lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),min_line_length, max_line_gap)
 
 newLines = []
 
 for line in lines:
     for x1,y1,x2,y2 in line:
-        newLines.append((x1, y1, x2, y1))
+        newLines.append((x1, y1, x2, y2))
 
 newLines.sort(key=lambda tup: tup[0])
 errorMargin = 10
 
 foundLines = []
 
-for line in newLines: 
-    if line[0] > errorMargin:
-        break
-    else:
-        foundLines.append(findLine(newLines, line,200,0.2))
-
-for line in foundLines: 
-    color = randomColor() 
-    for points in line:
-        cv2.line(line_image,(points[0],points[1]),(points[2],points[3]),color,1)
-
+line = findLine(newLines,200,0.01)
+color = randomColor() 
+for points in line:
+    cv2.line(line_image,(points[0],points[1]),(points[2],points[3]),color,1)
+    print("Adding point.")
 cv2.imwrite('houghlines3.jpg',line_image)
