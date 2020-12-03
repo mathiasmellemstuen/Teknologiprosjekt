@@ -71,47 +71,83 @@ def calculateHoughImage(image):
 
     return lines
 
-def calculateLineAngle(x1,y1,x2,y2):
+def calculateLineRadians(x1,y1,x2,y2):
     dx = x2 - x1
     dy = y2 - y1
     return math.atan2(dy,dx)
 
-def calculateNodes(houghLines, width, height): 
-    global crossDirection, step
+def convertAngle0To2Pi(a):
+    return a if a >= 0.0 else (2 * math.pi) + a
+
+def ccw(A,B,C):
+    return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+
+def intersect(A,B,C,D):
+    return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
+
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+    
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    
+    if div == 0:
+        return False
+
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+
+    return int(x),int(y)
+
+def upAngle(angle):
+    return (angle >= math.pi / 4 and angle <= (3*math.pi) / 4) or (angle >= math.pi + (math.pi / 4) and angle <= (2*math.pi) - (math.pi / 4))
+
+def calculateNodes(lines, minDistance, maxDistance, width, height):
+    
+    usedLines = []
     nodes = []
-    crossDirection = config.load()["crossDirection"]
-    step = config.load()["step"]
-    nodeMargin = config.load()["nodeMargin"]
 
-    for line in houghLines: 
-        for x1,y1,x2,y2 in line: 
-            lineAngle = abs(calculateLineAngle(x1,y1,x2,y2))
-            #print(lineAngle) 
-            if (lineAngle >= (math.pi / 4) and lineAngle <= ((3*math.pi)/4)) or (lineAngle >= math.pi + (math.pi/4) and lineAngle <= ((2*math.pi) - (math.pi/4))):
-                # Vertical search
-                #print("Inside angles.")
-                for y in range(y1,y2,step):
-                    for line2 in houghLines:
-                        if line2 is not line:
-                            for a1,b1,a2,b2 in line2: 
-                                if y >= b1 and y <= b2 and y >= y1 and y <= y2:
-                                    x = (x2 - x1) + x1 if x2 >= x1 else (x1 - x2) + x2
-                                    a = (a2 - a1) + a1 if a2 >= a1 else (a1 - a2) + a2
-                                    
-                                    if abs(x - a) < nodeMargin:
-                                        continue
+    for line in lines: 
+        for line2 in lines: 
+            if line == line2: 
+                continue
 
-                                    xPos = ((a - x) / 2) + x if a >= x else ((x - a) / 2) + a
-                                   # print("x:",x,"a:",a,"xPos:",xPos, "with angle:",lineAngle)  
-                                    element = {"x":xPos, "y": y}
+            currentLineAngle = calculateLineRadians(line[0],line[1],line[2],line[3])
+            currentLineAngle = convertAngle0To2Pi(currentLineAngle)
+            anotherLineAngle = calculateLineRadians(line2[0],line2[1],line2[2],line2[3])
+            anotherLineAngle = convertAngle0To2Pi(anotherLineAngle)
 
-                                    if element not in nodes:
-                                        nodes.append(element)
-                                   
-            else:
-                # Horizontal search
-                pass                       
-
+            if upAngle(currentLineAngle) and upAngle(anotherLineAngle):
+                
+                inter = intersect((line[0],line[1]),(width,line[1]),(line2[0],line2[1]),(line2[2],line2[3]))
+                
+                if inter and line not in usedLines and line2 not in usedLines:
+                    
+                    intersectPoint = line_intersection(((line[0],line[1]),(width,line[1])),((line2[0],line2[1]),(line2[2],line2[3])))
+                    intersectLineDistance = intersectPoint[0] - line[0]
+                    
+                    if intersectLineDistance > minDistance and intersectLineDistance < maxDistance: 
+                        
+                        usedLines.append(line)
+                        usedLines.append(line2)
+                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]))
+            else: 
+                inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
+                
+                if inter and line not in usedLines and line2 not in usedLines:
+                    
+                    intersectPoint = line_intersection(((line[0],line[1]),(line[0],height)),((line2[0],line2[1]),(line2[2],line2[3]))) 
+                    intersectLineDistance = intersectPoint[1] - line[1]
+                    
+                    if intersectLineDistance > minDistance and intersectLineDistance < maxDistance: 
+                        
+                        usedLines.append(line)
+                        usedLines.append(line2)
+                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2)))
     return nodes
 
 def addNodesOnImage(image, nodes, color):
@@ -151,17 +187,14 @@ def process():
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
         canny = convertImageToCanny(binary)
-        #canny = addDilationToImage(canny)
-
-        #Adding houghlines
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
        
         #Calculating and adding nodes
         width, height = camera.resolution
-        nodes = calculateNodes(hough, width, height) 
+        nodes = calculateNodes(hough,15, 250, width, height) 
         processed = addNodesOnImage(processed,nodes,(0,255,0))
-         
+        
         #Truncating before next loop
         raw_capture.truncate(0)
 
