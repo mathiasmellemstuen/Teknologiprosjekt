@@ -197,11 +197,13 @@ def upAngle(angle):
 
 h,w,c = line_image.shape
 
-def findLinePair():
+def calculateNodes(lines, minDistance, maxDistance, width, height):
+    
     usedLines = []
-    for line in newLines: 
-        closestLine = (10000,100000)
-        for line2 in newLines: 
+    nodes = []
+
+    for line in lines: 
+        for line2 in lines: 
             if line == line2: 
                 continue
 
@@ -211,33 +213,39 @@ def findLinePair():
             anotherLineAngle = convertAngle0To2Pi(anotherLineAngle)
 
             if upAngle(currentLineAngle) and upAngle(anotherLineAngle):
-                cv2.line(line_image,(line[0],line[1]),(line[2],line[3]),(0,255,0),2)
-                inter = intersect((line[0],line[1]),(w,line[1]),(line2[0],line2[1]),(line2[2],line2[3]))
+                
+                inter = intersect((line[0],line[1]),(width,line[1]),(line2[0],line2[1]),(line2[2],line2[3]))
+                
                 if inter and line not in usedLines and line2 not in usedLines:
-                    intersectPoint = line_intersection(((line[0],line[1]),(w,line[1])),((line2[0],line2[1]),(line2[2],line2[3])))
+                    
+                    intersectPoint = line_intersection(((line[0],line[1]),(width,line[1])),((line2[0],line2[1]),(line2[2],line2[3])))
                     intersectLineDistance = intersectPoint[0] - line[0]
-                    #cv2.line(line_image, (line[0], line[1]),intersectPoint,(0,0,255),3)
-                    if intersectLineDistance > 15 and intersectLineDistance < 250: 
+                    
+                    if intersectLineDistance > minDistance and intersectLineDistance < maxDistance: 
+                        
                         usedLines.append(line)
                         usedLines.append(line2)
-                        cv2.circle(line_image, (line[0] + (int(intersectLineDistance / 2)), line[1]), 10, (0,0,255), -1)
+                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]))
             else: 
-                cv2.line(line_image,(line[0],line[1]),(line[2],line[3]),(0,255,0),2)
-                inter = intersect((line[0],line[1]),(line[0],h),(line2[0],line2[1]),(line2[2],line2[3]))
+                inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
+                
                 if inter and line not in usedLines and line2 not in usedLines:
-                    intersectPoint = line_intersection(((line[0],line[1]),(line[0],h)),((line2[0],line2[1]),(line2[2],line2[3]))) 
+                    
+                    intersectPoint = line_intersection(((line[0],line[1]),(line[0],height)),((line2[0],line2[1]),(line2[2],line2[3]))) 
                     intersectLineDistance = intersectPoint[1] - line[1]
-                    if intersectLineDistance > 15 and intersectLineDistance < 250: 
-                        #cv2.line(line_image, (line[0], line[1]),intersectPoint,(255,0,255),3)
+                    
+                    if intersectLineDistance > minDistance and intersectLineDistance < maxDistance: 
+                        
                         usedLines.append(line)
                         usedLines.append(line2)
-                        cv2.circle(line_image,(line[0],line[1] + (int(intersectLineDistance / 2))),10,(255,0,0),-1)
+                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2)))
+    return nodes
 
-                        print(intersectLineDistance)
-    return False 
+#line = findLinePair()
+nodes = calculateNodes(newLines, 15, 250,w,h)
 
-line = findLinePair()
-
+for node in nodes: 
+    cv2.circle(line_image,node,10,(255,0,0),-1)
 #for points in line:
 #    color = (0,244,0)
 #    cv2.line(line_image,(points[0],points[1]),(points[2],points[3]),color,3)
