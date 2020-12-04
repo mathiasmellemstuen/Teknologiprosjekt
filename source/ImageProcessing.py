@@ -166,8 +166,9 @@ def removeNodesOnWhitePixels(nodes, image):
         if image[nodes[i][0],nodes[i][1]] == 255:
             del nodes[i]
         else:
-            i+=1
             print(image[nodes[i][0],nodes[i][1]])
+            i+=1
+
     return nodes
 
 def addNodesOnImage(image, nodes, color):
