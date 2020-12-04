@@ -204,15 +204,17 @@ def createRoads(nodes, width):
     closestNodeRight = None
 
     for node in forward:
+        if len(left) != 0: 
+            dist1 = calculateDistanceBetweenTwoPoints((left[0][0], left[0][1]),(node[0],node[1]))
         
-        dist1 = calculateDistanceBetweenTwoPoints((left[0][0], left[0][1]),(node[0],node[1]))
-        dist2 = calculateDistanceBetweenTwoPoints((right[0][0],right[0][1]),(node[0],node[1]))
+        if len(right) != 0: 
+            dist2 = calculateDistanceBetweenTwoPoints((right[0][0],right[0][1]),(node[0],node[1]))
 
-        if dist1 < lastDistanceLeft and node[1] < left[0][1]: 
+        if len(left) != 0 and dist1 < lastDistanceLeft and node[1] < left[0][1]: 
             lastDistanceLeft = dist1
             closestNodeLeft = node
         
-        if dist2 < lastDistanceRighti and node[1] < right[0][1]:
+        if len(right) != 0 and dist2 < lastDistanceRighti and node[1] < right[0][1]:
             lastDistanceRight = dist2
             closestNodeRight = node
         print("FKSLFDSLDFHJSFDHJSK") 
