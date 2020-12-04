@@ -139,7 +139,7 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         
                         usedLines.append(line)
                         usedLines.append(line2)
-                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]), True)
+                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1], True))
             else: 
                 inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
                 
