@@ -68,8 +68,13 @@ def calculateHoughImage(image):
     lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],maxLineGap=c["houghlinesMaxLineGap"])
     if lines is None: 
         lines = []
+    
+    returnLines = []
+    
+    for line in lines:
+        returnLines.append((line[0][0].item(),line[0][1].item(),line[0][2].item(),line[0][3].item()))
 
-    return lines
+    return returnLines
 
 def calculateLineRadians(x1,y1,x2,y2):
     dx = x2 - x1
@@ -155,7 +160,7 @@ def addNodesOnImage(image, nodes, color):
         for node in nodes: 
             if node is None: 
                 continue
-            image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
+            image = cv.circle(image,(int(node[0]),int(node[1])),5,(0,255,0),-1)
     image = cv.putText(image,"Nodes: "+str(len(nodes)),(10,20),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA) 
     return image
 
@@ -166,8 +171,7 @@ def addHoughLinesOnImage(image, lines, color):
 
     image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
     for line in lines:
-        for x1,y1,x2,y2 in line:
-            cv.line(image, (x1,y1), (x2,y2), color, config.load()["houghlinesRedLinePixels"])
+        cv.line(image, (line[0],line[1]), (line[2],line[3]), color, config.load()["houghlinesRedLinePixels"])
     image = cv.putText(image, "Lines: " + str(len(lines)),(10,60),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA)
     
     return image
