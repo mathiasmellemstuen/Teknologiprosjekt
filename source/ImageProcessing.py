@@ -215,6 +215,7 @@ def createRoads(nodes, width):
         if dist2 < lastDistanceRighti and node[1] < right[0][1]:
             lastDistanceRight = dist2
             closestNodeRight = node
+        print("FKSLFDSLDFHJSFDHJSK") 
         print(forward) 
         return {"forward":forward, "left": left, "right":right,"intersections":{"left":closestNodeLeft, "right":closestNodeRight}}
 
