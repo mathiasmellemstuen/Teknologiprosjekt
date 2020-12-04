@@ -163,11 +163,10 @@ def calculateIntersectionNode(nodes):
 def removeNodesOnWhitePixels(nodes, image): 
     i = 0
     while i < len(nodes) - 1: 
-        
+        print(image[nodes[i][0],nodes[i][1]])    
         if image[nodes[i][0],nodes[i][1]] == 255:
             del nodes[i]
             i-=1
-            print("Deleted node!") 
         i+= 1
     return nodes
 
@@ -214,6 +213,7 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
         nodes = removeNodesOnWhitePixels(nodes, binary)
+         
         processed = addNodesOnImage(processed,nodes,(0,255,0))
         
         #Truncating before next loop
