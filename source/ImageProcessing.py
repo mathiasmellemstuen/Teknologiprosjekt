@@ -160,25 +160,26 @@ def calculateIntersectionNode(nodes):
         for node2 in nodes:
             pass
 
-def removeLoneyPixels(image): 
-    image.astype(np.uint8)
-    image = cv.threshold(image, 254,255,cv.THRESH_BINARY)[1] 
-    kernel1 = np.array([[0,0,0],
-                        [0,1,0],
-                        [0,0,0]],np.uint8)
+def removeLoneyPixelNodes(nodes, image): 
+    i = 0
+    while i < len(nodes) - 1: 
+        currentPixel = image[nodes[i][0], nodes[i][1]]
+        upPixel = image[nodes[i][0], nodes[i + 1][1]]
+        upRightPixel = image[nodes[i + 1][0], nodes[i + 1][1]]
+        upLeftPixel = image[nodes[i - 1][0], nodes[i + 1][1]]
+        leftPixel = image[nodes[i - 1][0], nodes[i][1]]
+        rightPixel = image[nodes[i + 1][0], nodes[i][1]]
+        downPixel = image[nodes[i][0], nodes[i - 1][1]]
+        downLeftPixel = image[nodes[i - 1][0], nodes[i - 1][1]]
+        downRightPixel = image[nodes[i + 1][0], nodes[i - 1][1]]
+        
+        if currentPixel != upRightPixel and currentPixel != upLeftPixel and currentPixel != leftPixel and currentPixel != rightPixel and currentPixel != downPixel and currentPixel != downLeftPixel and currentPixel != downRightPixel:
+            del nodes[i]
+        else: 
+            i+= 1 
 
-    kernel2 = np.array([[1,1,1],
-                        [1,0,1],
-                        [1,1,1]],np.uint8)
-    hitormiss1 = cv.morphologyEx(image,cv.MORPH_ERODE,kernel1)
-    hitormiss2 = cv.morphologyEx(image,cv.MORPH_ERODE,kernel2)
+    return nodes
 
-    hitormiss = cv.bitwise_and(hitormiss1,hitormiss2)
-
-    hitormissComp = cv.bitwise_not(hitormiss)
-    
-    return cv.bitwise_and(input,input,mask=hitormissComp)
-            
 def removeNodesOnWhitePixels(nodes, image): 
     i = 0
     while i < len(nodes) - 1: 
@@ -225,7 +226,7 @@ def process():
         original = frame.array
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
-        binary = removeLoneyPixels(binary) # Removing every lonely pixel, either black or white. 
+        #binary = removeLoneyPixels(binary) # Removing every lonely pixel, either black or white. 
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
@@ -234,6 +235,7 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
         #nodes = removeNodesOnWhitePixels(nodes, binary)
+        nodes = removeLoneyPixelNodes(nodes, binary)
         processed = addNodesOnImage(processed,nodes,(0,255,0))
         
         #Truncating before next loop
