@@ -139,7 +139,7 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         
                         usedLines.append(line)
                         usedLines.append(line2)
-                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]))
+                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]), True)
             else: 
                 inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
                 
@@ -152,9 +152,13 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         
                         usedLines.append(line)
                         usedLines.append(line2)
-                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2)))
+                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2), False))
     return nodes
 
+def calculateIntersectionNode(nodes): 
+    for node in nodes:
+        for node2 in nodes:
+            pass
 def addNodesOnImage(image, nodes, color):
     if nodes is not None: 
         for node in nodes: 
