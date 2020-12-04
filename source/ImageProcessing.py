@@ -163,7 +163,7 @@ def calculateIntersectionNode(nodes):
 def removeNodesOnWhitePixels(nodes, image): 
     for i in range(0,len(nodes) - 1): 
         if image[nodes[i][0],nodes[i][1]] == 255:
-            del nodesi]
+            del nodes[i]
     
     return nodes
 
