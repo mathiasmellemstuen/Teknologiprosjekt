@@ -160,6 +160,23 @@ def calculateIntersectionNode(nodes):
         for node2 in nodes:
             pass
 
+def removeLoneyPixels(image): 
+    kernel1 = np.array([[0,0,0],
+                        [0,1,0],
+                        [0,0,0]],np.uint8)
+
+    kernel2 = np.array([[1,1,1],
+                        [1,0,1],
+                        [1,1,1]],np.uint8)
+    hitormiss1 = cv.morphologyEx(image,cv.MORPH_ERODE,kernel1)
+    hitormiss2 = cv.morphologyEx(image,cv.MORPH_ERODE,kernel2)
+
+    hitormiss = cv.bitwise_and(hitormiss1,hitormiss2)
+
+    hitormissComp = cv.bitwise_not(hitormiss)
+    
+    return cv.bitwise_and(input,input,mask=hitormissComp)
+            
 def removeNodesOnWhitePixels(nodes, image): 
     i = 0
     while i < len(nodes) - 1: 
@@ -206,6 +223,7 @@ def process():
         original = frame.array
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
+        binary = removeLoneyPixels(binary) # Removing every lonely pixel, either black or white. 
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
@@ -213,8 +231,7 @@ def process():
         #Calculating and adding nodes
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
-        nodes = removeNodesOnWhitePixels(nodes, binary)
-         
+        #nodes = removeNodesOnWhitePixels(nodes, binary)
         processed = addNodesOnImage(processed,nodes,(0,255,0))
         
         #Truncating before next loop
