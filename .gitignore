@@ -5,3 +5,5 @@
 *.aux
 *.synctex.gz
 *.swp
+
+*.DS_Store
