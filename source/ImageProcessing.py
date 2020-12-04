@@ -144,7 +144,7 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                 inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
                 
                 if inter and line not in usedLines and line2 not in usedLines:
-                    
+
                     intersectPoint = line_intersection(((line[0],line[1]),(line[0],height)),((line2[0],line2[1]),(line2[2],line2[3]))) 
                     intersectLineDistance = intersectPoint[1] - line[1]
                     
@@ -159,6 +159,11 @@ def calculateIntersectionNode(nodes):
     for node in nodes:
         for node2 in nodes:
             pass
+
+def removeNodesOnWhitePixels(nodes, image): 
+    for node in nodes: 
+        print(image[node[0],node[1]])
+
 def addNodesOnImage(image, nodes, color):
     if nodes is not None: 
         for node in nodes: 
@@ -202,7 +207,7 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
         processed = addNodesOnImage(processed,nodes,(0,255,0))
-        
+        removeNodesOnWhitePixels(nodes, binary)        
         #Truncating before next loop
         raw_capture.truncate(0)
 
