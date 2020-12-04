@@ -9,6 +9,7 @@ from picamera.array import PiRGBArray
 import config
 import json
 import math
+import random
 
 threadRunning = False
 thread = None
@@ -155,11 +156,6 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         nodes.append((line[0], line[1] + int(intersectLineDistance / 2), False))
     return nodes
 
-def calculateIntersectionNode(nodes): 
-    for node in nodes:
-        for node2 in nodes:
-            pass
-
 def removeLoneyPixelNodes(nodes, image): 
     i = 0
     while i < len(nodes) - 1: 
@@ -180,16 +176,58 @@ def removeLoneyPixelNodes(nodes, image):
 
     return nodes
 
-def removeNodesOnWhitePixels(nodes, image): 
-    i = 0
-    while i < len(nodes) - 1: 
-        if image[nodes[i][0],nodes[i][1]] == 255:
-            del nodes[i]
-        else:
-            print(image[nodes[i][0],nodes[i][1]])
-            i+=1
+def calculateDistanceBetweenTwoPoints(p1, p2): 
+    return ((((p2[0] - p1[0] )**2) + ((p2[1]-p1[1])**2) )**0.5)
 
-    return nodes
+def createRoads(nodes, width): 
+    forward = []
+    left = [] 
+    right = []
+
+    for node in nodes: 
+        if node[2]: 
+            forward.append(node)
+        else: 
+            if node[0] >= width: 
+                right.append(node) 
+            else: 
+                left.append(node)
+    
+    forward.sort(key=lambda tup: tup[1])
+    left.sort(key=lambda tup: tup[0],reverse=True)
+    right.sort(key=lambda tup: tup[0])
+    
+    lastDistanceLeft = 100000000000
+    closestNodeLeft = None
+
+    lastDistanceRight = 100000000000
+    closestNodeRight = None
+
+    for node in forward:
+        
+        dist1 = calculateDistanceBetweenTwoPoints((left[0], left[1]),(node[0],node[1]))
+        dist2 = calculateDistanceBetweenTwoPoints((right[0],right[1]),(node[0],node[1]))
+
+        if dist1 < lastDistanceLeft and node[1] < left[0][1]: 
+            lastDistanceLeft = dist1
+            closestNodeLeft = node
+        
+        if dist2 < lastDistanceRighti and node[1] < right[0][1]:
+            lastDistanceRight = dist2
+            closestNodeRight = node
+        
+        return {"forward":forward, "left": left, "right":right,"intersections":{"left":closestNodeLeft, "right":closestNodeRight}}
+
+def addRoadsOnImage(image, roads): 
+
+    color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
+    for i in range(1, roads["forward"]):
+        
+        currentPoint = (roads["forward"][i][0], roads["forward"][i][1])
+        previousPoint = (roads["forward"][i - 1][0], roads["forward"][i - 1][1])
+        cv.line(image,currentPoint, previousPoint,color, 2)
+    
+    return image
 
 def addNodesOnImage(image, nodes, color):
     if nodes is not None: 
@@ -236,8 +274,9 @@ def process():
         nodes = calculateNodes(hough,15, 250, width, height) 
         #nodes = removeNodesOnWhitePixels(nodes, binary)
         nodes = removeLoneyPixelNodes(nodes, binary)
+        roads = createRoads(nodes,width)
         processed = addNodesOnImage(processed,nodes,(0,255,0))
-        
+        processed = addRoadsOnImage(processed, roads)
         #Truncating before next loop
         raw_capture.truncate(0)
 
