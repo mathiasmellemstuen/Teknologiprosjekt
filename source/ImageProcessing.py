@@ -161,6 +161,7 @@ def calculateIntersectionNode(nodes):
             pass
 
 def removeLoneyPixels(image): 
+    image = cv.threshold(image, 254,255,cv.THRESH_BINARY)[1] 
     kernel1 = np.array([[0,0,0],
                         [0,1,0],
                         [0,0,0]],np.uint8)
