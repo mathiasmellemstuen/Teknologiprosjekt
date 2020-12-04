@@ -215,7 +215,7 @@ def createRoads(nodes, width):
         if dist2 < lastDistanceRighti and node[1] < right[0][1]:
             lastDistanceRight = dist2
             closestNodeRight = node
-        
+        print(forward) 
         return {"forward":forward, "left": left, "right":right,"intersections":{"left":closestNodeLeft, "right":closestNodeRight}}
 
 def addRoadsOnImage(image, roads): 
