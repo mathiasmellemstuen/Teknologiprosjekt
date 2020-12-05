@@ -223,13 +223,22 @@ def addRoadsOnImage(image, roads):
 
     color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
     
-    if roads["forward"] != None: 
+    if roads["forward"] != None or roads["forward"] != []: 
         for i in range(1, len(roads["forward"]) - 1):
             
             currentPoint = (roads["forward"][i][0], roads["forward"][i][1])
             previousPoint = (roads["forward"][i - 1][0], roads["forward"][i - 1][1])
             cv.line(image,currentPoint, previousPoint,color, 2)
-        
+    
+
+    color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
+    
+    if roads["left"] != None Or roads["left"] != []:
+        for i in range(1, len(roads["left"]) - 1): 
+            currentPoint = (roads["left"][i][0], roads["left"][i][1])
+            previousPoint = (roads["left"][i - 1][0], roads["left"][i - 1][1])
+            cv.line(image,currentPoint, previousPoint,color, 2)
+   
     return image
 
 def addNodesOnImage(image, nodes, color):
