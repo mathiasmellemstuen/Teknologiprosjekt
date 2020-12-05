@@ -251,11 +251,11 @@ def addRoadsOnImage(image, roads):
     color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
     
     if roads["intersection"]["left"] != None:
-        cv.line(image, (roads["left"][0][0], roads["left"][0][1]), (roads["intersection"]["left"]),color,4)
+        cv.line(image, (roads["left"][0][0], roads["left"][0][1]), (roads["intersection"]["left"][0], roads["intersection"]["left"[1]),color,4)
 
     color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
     if roads["intersection"]["right"] != None:
-        cv.line(image, (roads["right"][0][0], roads["right"][0][1]), (roads["intersection"]["right"]),color,4)
+        cv.line(image, (roads["right"][0][0], roads["right"][0][1]), (roads["intersection"]["right"][0], roads["intersection"]["right"][1]),color,4)
 
    
     return image
