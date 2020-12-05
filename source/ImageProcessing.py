@@ -18,6 +18,7 @@ grey = None
 binary = None
 canny = None
 processed = None
+roads = []
 
 contrast = 128
 crossDirection = "forward" # forward|left|right|random
@@ -256,8 +257,7 @@ def addRoadsOnImage(image, roads):
     color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
     if roads["intersection"]["right"] != None:
         cv.line(image, (roads["right"][0][0], roads["right"][0][1]), (roads["intersection"]["right"][0], roads["intersection"]["right"][1]),color,4)
-
-   
+ 
     return image
 
 def addNodesOnImage(image, nodes, color):
@@ -282,7 +282,7 @@ def addHoughLinesOnImage(image, lines, color):
     return image
 
 def process():
-    global original, grey, binary, canny, camera, processed, threadRunning
+    global original, grey, binary, canny, camera, processed, threadRunning, roads
 
     raw_capture = PiRGBArray(camera, size=(config.load()["resolutionWidth"], config.load()["resolutionHeight"]))
 
@@ -309,6 +309,11 @@ def process():
         processed = addNodesOnImage(processed,nodes,(0,255,0))
         processed = addRoadsOnImage(processed, roads)
         #Truncating before next loop
+
+        #Doing this for d ebugging purposesses 
+        roads = roads["forward"]
+
+
         raw_capture.truncate(0)
 
 def getOriginalImage():
@@ -327,6 +332,9 @@ def getProcessedImage():
     ret, jpeg = cv.imencode('.jpg', processed)
     return jpeg.tobytes()
 
+def getRoads(): 
+    global roads
+    return roads
 def start(): 
     global thread, threadRunning
     threadRunning = True
