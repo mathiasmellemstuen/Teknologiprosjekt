@@ -2,7 +2,6 @@ from easygopigo3 import EasyGoPiGo3
 import config
 import threading
 import math
-import numpy as np
 
 defaultSpeed = 0
 defaultTurn = 0
@@ -12,7 +11,7 @@ rotation = 0    # This is the turning rate of the robot |Float   | -1 -> 1
 
 # Contants for motion control
 constants = {
-    "maxSpeed": 100,
+    "maxSpeed": 50,
     "minSpeed": 0,
     "distanceToSlowdown": 10,
     "errorMarginNodeInside": 5,
@@ -63,7 +62,7 @@ def calcSpeed(nextNode):
     minSpeed = int(constants["minSpeed"])
     distanceToSlowdown = int(constants["distanceToSlowdown"])
 
-    length = math.sqrt(math.pow(nextNode[0], 2), math.pow(nextNode[1], 2))
+    length = getDistanceToNextNode(nextNode)
 
     if length > distanceToSlowdown:
         speed = int(constants["maxSpeed"])
@@ -79,11 +78,6 @@ def setNodes(newNodes):
     global nodes
     nodes = newNodes
 
-def setSpeed():
-    global target, constants
-    speed = constants["maxSpeed"]
-    node = getNode()
-
 
     
 
@@ -98,8 +92,9 @@ def setVelocity():  # Needs a rework (or the functions it is using)
     
     while threadRunning:
         try:    # if there is some error setting the speed, then just stop the robot.
-            speed = getSpeed()
-            rotation = getRotation()
+            speed = calcSpeed(getNextNode())
+            #rotation = getRotation()
+            rotation = getAngleToNextNode()
         except:
             speed = defaultSpeed
             rotation = defaultTurn 
@@ -124,21 +119,19 @@ def getNextNode():  # Might replace getNode(), depending on what featsured is ne
     return nextNode
 
 def getDistanceToNextNode(nextNode):
-    
+    # Here i can add some sin, cos, tan magic to calculate the real distanse, or I can be lazy and just base it of some distance, all depending on time.
     Ax = nextNode[0] - int(constants["cammeraWidth"])
     Ay = nextNode[1]
 
     return abs(math.sqrt(Ax**2 + Ay**2))
 
 def getAngleToNextNode():
-    # Here i can add some sin, cos, tan magic to calculate the real distanse, or I can be lazy and just base it of some distance, all depending on time.
     global constants
 
     Ax = nextNode[0] - int(constants["cammeraWidth"])
     Ay = nextNode[1]
 
     theta = math.atan2(Ay,Ax)
-    theta = np.atan2(Ay, Ax)
 
     return theta    # Deg
 
