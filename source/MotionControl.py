@@ -2,6 +2,7 @@ from easygopigo3 import EasyGoPiGo3
 import config
 import threading
 import math
+import numpy as np
 
 defaultSpeed = 0
 defaultTurn = 0
@@ -116,7 +117,7 @@ def getNextNode():  # Might replace getNode(), depending on what featsured is ne
     for node in nodes:
         if node[0] == nextNode[0] and node[1] == nextNode[1]:
             continue
-        elif:   # see if the node is closer then nextNode
+        else:   # see if the node is closer then nextNode
             if abs(node[1] - int(constants["cammeraWidth"])) > abs(nextNode[1] - int(constants["cammeraWidth"])) and int(constants["minClosesNodeIgnore"]) < nextNode[0] < node[0]:
                 nextNode = node
 
@@ -136,7 +137,8 @@ def getAngleToNextNode():
     Ax = nextNode[0] - int(constants["cammeraWidth"])
     Ay = nextNode[1]
 
-    theta = math.atan(Ay/Ax)
+    theta = math.atan2(Ay,Ax)
+    theta = np.atan2(Ay, Ax)
 
     return theta    # Deg
 
