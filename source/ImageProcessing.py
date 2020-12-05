@@ -9,6 +9,7 @@ from picamera.array import PiRGBArray
 import config
 import json
 import math
+import random
 
 threadRunning = False
 thread = None
@@ -68,8 +69,13 @@ def calculateHoughImage(image):
     lines = cv.HoughLinesP(image,c["houghlinesRho"],c["houghlinesTheta"],c["houghlinesTreshold"],minLineLength=c["houghlinesMinLineLength"],maxLineGap=c["houghlinesMaxLineGap"])
     if lines is None: 
         lines = []
+    
+    returnLines = []
+    
+    for line in lines:
+        returnLines.append((line[0][0].item(),line[0][1].item(),line[0][2].item(),line[0][3].item()))
 
-    return lines
+    return returnLines
 
 def calculateLineRadians(x1,y1,x2,y2):
     dx = x2 - x1
@@ -134,12 +140,12 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         
                         usedLines.append(line)
                         usedLines.append(line2)
-                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1]))
+                        nodes.append((line[0] + int(intersectLineDistance / 2), line[1], True))
             else: 
                 inter = intersect((line[0],line[1]),(line[0],height),(line2[0],line2[1]),(line2[2],line2[3]))
                 
                 if inter and line not in usedLines and line2 not in usedLines:
-                    
+
                     intersectPoint = line_intersection(((line[0],line[1]),(line[0],height)),((line2[0],line2[1]),(line2[2],line2[3]))) 
                     intersectLineDistance = intersectPoint[1] - line[1]
                     
@@ -147,15 +153,93 @@ def calculateNodes(lines, minDistance, maxDistance, width, height):
                         
                         usedLines.append(line)
                         usedLines.append(line2)
-                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2)))
+                        nodes.append((line[0], line[1] + int(intersectLineDistance / 2), False))
     return nodes
+
+def removeLoneyPixelNodes(nodes, image): 
+    i = 0
+    while i < len(nodes) - 1: 
+        currentPixel = image[nodes[i][0], nodes[i][1]]
+        upPixel = image[nodes[i][0], nodes[i + 1][1]]
+        upRightPixel = image[nodes[i + 1][0], nodes[i + 1][1]]
+        upLeftPixel = image[nodes[i - 1][0], nodes[i + 1][1]]
+        leftPixel = image[nodes[i - 1][0], nodes[i][1]]
+        rightPixel = image[nodes[i + 1][0], nodes[i][1]]
+        downPixel = image[nodes[i][0], nodes[i - 1][1]]
+        downLeftPixel = image[nodes[i - 1][0], nodes[i - 1][1]]
+        downRightPixel = image[nodes[i + 1][0], nodes[i - 1][1]]
+        
+        if currentPixel != upRightPixel and currentPixel != upLeftPixel and currentPixel != leftPixel and currentPixel != rightPixel and currentPixel != downPixel and currentPixel != downLeftPixel and currentPixel != downRightPixel:
+            del nodes[i]
+        else: 
+            i+= 1 
+
+    return nodes
+
+def calculateDistanceBetweenTwoPoints(p1, p2): 
+    return ((((p2[0] - p1[0] )**2) + ((p2[1]-p1[1])**2) )**0.5)
+
+def createRoads(nodes, width): 
+    forward = []
+    left = [] 
+    right = []
+
+    for node in nodes: 
+        if node[2]: 
+            forward.append(node)
+        else: 
+            if node[0] >= width: 
+                right.append(node) 
+            else: 
+                left.append(node)
+    
+    forward.sort(key=lambda tup: tup[1])
+    left.sort(key=lambda tup: tup[0],reverse=True)
+    right.sort(key=lambda tup: tup[0])
+    
+    lastDistanceLeft = 100000000000
+    closestNodeLeft = None
+
+    lastDistanceRight = 100000000000
+    closestNodeRight = None
+
+    for node in forward:
+        if len(left) != 0: 
+            dist1 = calculateDistanceBetweenTwoPoints((left[0][0], left[0][1]),(node[0],node[1]))
+        
+        if len(right) != 0: 
+            dist2 = calculateDistanceBetweenTwoPoints((right[0][0],right[0][1]),(node[0],node[1]))
+
+        if len(left) != 0 and dist1 < lastDistanceLeft and node[1] < left[0][1]: 
+            lastDistanceLeft = dist1
+            closestNodeLeft = node
+        
+        if len(right) != 0 and dist2 < lastDistanceRighti and node[1] < right[0][1]:
+            lastDistanceRight = dist2
+            closestNodeRight = node
+        print("FKSLFDSLDFHJSFDHJSK") 
+        print(forward) 
+        return {"forward":forward, "left": left, "right":right,"intersections":{"left":closestNodeLeft, "right":closestNodeRight}}
+
+def addRoadsOnImage(image, roads): 
+
+    color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
+    
+    if roads["forward"] != None: 
+        for i in range(1, roads["forward"]):
+            
+            currentPoint = (roads["forward"][i][0], roads["forward"][i][1])
+            previousPoint = (roads["forward"][i - 1][0], roads["forward"][i - 1][1])
+            cv.line(image,currentPoint, previousPoint,color, 2)
+        
+    return image
 
 def addNodesOnImage(image, nodes, color):
     if nodes is not None: 
         for node in nodes: 
             if node is None: 
                 continue
-            image = cv.circle(image,(int(node["x"]),int(node["y"])),5,(0,255,0),-1)
+            image = cv.circle(image,(int(node[0]),int(node[1])),5,(0,255,0),-1)
     image = cv.putText(image,"Nodes: "+str(len(nodes)),(10,20),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA) 
     return image
 
@@ -166,8 +250,7 @@ def addHoughLinesOnImage(image, lines, color):
 
     image = cv.cvtColor(image, cv.COLOR_GRAY2BGR) 
     for line in lines:
-        for x1,y1,x2,y2 in line:
-            cv.line(image, (x1,y1), (x2,y2), color, config.load()["houghlinesRedLinePixels"])
+        cv.line(image, (line[0],line[1]), (line[2],line[3]), color, config.load()["houghlinesRedLinePixels"])
     image = cv.putText(image, "Lines: " + str(len(lines)),(10,60),cv.FONT_HERSHEY_COMPLEX,1,(57,255,20),1,cv.LINE_AA)
     
     return image
@@ -186,6 +269,7 @@ def process():
         original = frame.array
         grey = convertImageToGrayScale(original)
         binary = convertImageToBinary(grey)
+        #binary = removeLoneyPixels(binary) # Removing every lonely pixel, either black or white. 
         canny = convertImageToCanny(binary)
         hough = calculateHoughImage(canny)
         processed = addHoughLinesOnImage(canny, hough, (0,0,255))
@@ -193,8 +277,11 @@ def process():
         #Calculating and adding nodes
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
+        #nodes = removeNodesOnWhitePixels(nodes, binary)
+        nodes = removeLoneyPixelNodes(nodes, binary)
+        roads = createRoads(nodes,width)
         processed = addNodesOnImage(processed,nodes,(0,255,0))
-        
+        processed = addRoadsOnImage(processed, roads)
         #Truncating before next loop
         raw_capture.truncate(0)
 
