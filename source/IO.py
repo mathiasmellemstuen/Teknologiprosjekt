@@ -30,6 +30,7 @@ try:
         ui.setGrayImage(ip.getGreyImage())
         ui.setBinaryImage(ip.getBinaryImage())
         ui.setProcessedImage(ip.getProcessedImage())
+        mc.setNodes(ip.getRoads())
 except KeyboardInterrupt:
     print("Starting shutdown.")
     running = False
