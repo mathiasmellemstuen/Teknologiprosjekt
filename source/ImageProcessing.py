@@ -233,7 +233,7 @@ def addRoadsOnImage(image, roads):
 
     color = (random.randrange(0,255), random.randrange(0,255), random.randrange(0,255))
     
-    if roads["left"] != None Or roads["left"] != []:
+    if roads["left"] != None or roads["left"] != []:
         for i in range(1, len(roads["left"]) - 1): 
             currentPoint = (roads["left"][i][0], roads["left"][i][1])
             previousPoint = (roads["left"][i - 1][0], roads["left"][i - 1][1])
