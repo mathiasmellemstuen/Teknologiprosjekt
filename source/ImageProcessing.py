@@ -304,16 +304,23 @@ def process():
         width, height = camera.resolution
         nodes = calculateNodes(hough,15, 250, width, height) 
         #nodes = removeNodesOnWhitePixels(nodes, binary)
-        nodes = removeLoneyPixelNodes(nodes, binary)
+        #nodes = removeLoneyPixelNodes(nodes, binary)
         roads = createRoads(nodes,width)
         processed = addNodesOnImage(processed,nodes,(0,255,0))
         processed = addRoadsOnImage(processed, roads)
         #Truncating before next loop
 
         #Doing this for d ebugging purposesses 
-        roads = roads["forward"]
-
-
+        if roads["forward"] != None or roads["forward"] != []: 
+            roads = roads["forward"]
+        else: 
+            roads = roads["forward"] + roads["right"] + roads["left"] 
+        
+        if roads == [] or roads == None: 
+            roads = hough
+        
+        roads.sort(key=lambda tup: tup[1])
+        
         raw_capture.truncate(0)
 
 def getOriginalImage():
