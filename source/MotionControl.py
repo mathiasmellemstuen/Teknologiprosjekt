@@ -15,10 +15,15 @@ constants = {
     "minSpeed": 0,
     "distanceToSlowdown": 10,
     "errorMarginNodeInside": 5,
-    "errorMarginNodeCleaning": 5
+    "errorMarginNodeCleaning": 5,
+
+    "minClosestNodeIgnore": 5,
+
+    "cammeraWidth": 500,    # Get form imageProsessing
+    "cammeraHeight": 500    # Get form imageProsessing
 }
 
-target = None
+nodes = None
 #{
 #        "nodes": [
 #            {
@@ -29,6 +34,15 @@ target = None
 #        "width":500,
 #        "height":500
 #}
+
+#   Noes from ImageProsessing
+#       Representing all of the nodes on the road
+#
+#   [
+#   (x, y),     # This is the middle point the "road"
+#   ]
+
+
 
 thread = None
 threadRunning = True
@@ -60,14 +74,14 @@ def calcSpeed(nextNode):
     return speed
 
 # Set 
-def setTarget(newTarget):
-    global target
-    target = newTarget
+def setNodes(newNodes):
+    global nodes
+    nodes = newNodes
 
 def setSpeed():
     global target, constants
     speed = constants["maxSpeed"]
-    node = getNode(target)
+    node = getNode()
 
 
     
@@ -76,17 +90,16 @@ def setSpeed():
     
 
 
-def setVelocity():
+def setVelocity():  # Needs a rework (or the functions it is using)
     global speed, rotation, robot, threadRunning
     global defaultSpeed, defaultTurn
     global target, constants
     
     while threadRunning:
-        try:
+        try:    # if there is some error setting the speed, then just stop the robot.
             speed = getSpeed()
             rotation = getRotation()
         except:
-            #print("Did not load speed and turn, stopping for this loop")
             speed = defaultSpeed
             rotation = defaultTurn 
         
@@ -95,19 +108,57 @@ def setVelocity():
 
 
 # Get 
+def getNextNode():  # Might replace getNode(), depending on what featsured is needed
+    global nodes, constants
+
+    nextNode = nodes[0]
+
+    for node in nodes:
+        if node[0] == nextNode[0] and node[1] == nextNode[1]:
+            continue
+        elif:   # see if the node is closer then nextNode
+            if abs(node[1] - int(constants["cammeraWidth"])) > abs(nextNode[1] - int(constants["cammeraWidth"])) and int(constants["minClosesNodeIgnore"]) < nextNode[0] < node[0]:
+                nextNode = node
+
+    return nextNode
+
+def getDistanceToNextNode(nextNode):
+    
+    Ax = nextNode[0] - int(constants["cammeraWidth"])
+    Ay = nextNode[1]
+
+    return abs(math.sqrt(Ax**2 + Ay**2))
+
+def getAngleToNextNode():
+    # Here i can add some sin, cos, tan magic to calculate the real distanse, or I can be lazy and just base it of some distance, all depending on time.
+    global constants
+
+    Ax = nextNode[0] - int(constants["cammeraWidth"])
+    Ay = nextNode[1]
+
+    theta = math.atan(Ay/Ax)
+
+    return theta    # Deg
+
+def degToPrecent(deg):
+    totalTurnDeg = 180 # Deg, can change to whant ever is smartest
+
+    return deg/totalTurnDeg * 100
+
+
 def getNode():
     global target, constants
 
     nextNode = [int(target["nodes"][i]["x"]), int(target["nodes"][i]["y"])]
-
+    
     i = 0
-    while nextNode[i] and nextNode[i] >= int(constants["errorMargin"]):
+    while nextNode[i] and nextNode[i] >= int(constants["errorMargin"]): # ?
         i += 1
         nextNode = [int(target["nodes"][i]["x"]), int(target["nodes"][i]["y"])]
 
     return nextNode
 
-def cleanNodes(nodes):
+def cleanNodes(nodes):  # This probaly needs a rework...
     global constants
 
     currentNode = {}
@@ -132,6 +183,10 @@ def cleanNodes(nodes):
         i += 1
     return nodes
         
+
+
+
+
 def getConstantsFromConfig():
     pass
 
@@ -139,12 +194,12 @@ def getVoltage():
     global robot
     return robot.volt()
 
-def getSpeed():
+def getSpeed():     # Old, can probaly remove
     global speed
     speed = config.load()["speed"]
     return speed
 
-def getRotation():
+def getRotation():  # Old, can probaly remove
     global rotation 
     rotation = config.load()["rotation"]
     return rotation
